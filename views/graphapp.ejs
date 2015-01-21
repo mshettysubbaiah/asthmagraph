@@ -1,0 +1,394 @@
+<html>
+<head>
+<style>
+
+	</style>
+		
+      <link rel="stylesheet" href ="app/css/graphappmain.css">
+      <link rel="stylesheet" href ="js-lib/css/bootstrap.css">
+      <link rel="stylesheet" href="js-lib/css/jquery-ui.css">
+    
+  <!--link rel="stylesheet" href="jquery-ui.css"-->
+      <link rel="stylesheet" href="js-lib/css/jquery-ui.theme.css">
+      <script src="js-lib/js/jquery-1.11.1.js" type="text/javascript"></script>
+      <script src="js-lib/js/jquery-ui.js" type="text/javascript"></script>
+      <script src="js-lib/js/bootstrap.js" type="text/javascript"></script>
+        
+
+  
+      <script src = "app/js/basicapp.js"  type = "text/javascript">
+      <link rel="stylesheet" type="text/css" href="js-lib/css/slidepanel.css">
+      <script src="public/app/js-lib/js/jquery.slidePanel.js" type="text/javascript"> </script>
+    <!--script src = "ZeroClipboard.js"> </script--> 
+      <script src="app/js/modal.js" type="text/javascript"></script>
+  
+      </head>
+
+      <body>
+    <!-----------------------------------------------code for node dialog form----------------------------------------!---->
+      <div id = "dialog-form"> 
+      <div class="controls" id="profs" >
+	
+			<form class="input-append" id="frm-data" action="">
+									    
+									    <!--h4 id ="modalheading"></h4-->	
+	    <span class = "nodeheading">NODE</span>								    
+	    <hr class = "topheadingline">
+			<label>Term</label>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="Term" id = "termtext" />
+			<br>
+			<br>
+			&nbsp;<b>Synonyms</b><input type="text"  autocomplete="off" class="input modal-value newone" id="synicfield1" name="Synonyms" />
+                          <br>
+                          <br>
+			<label>Categories</label>	
+			<ul>    
+			<li class = "newlis"><input type="radio" name="category" value="unclassified" id="radio-unclassified" checked>&nbspUnclassified&nbsp&nbsp</li>
+      <li class = "newlis"><input type="radio" name="category" value="genetics" id="radio-genetics">&nbspGenetics&nbsp&nbsp</li>
+      <li class = "newlis"><input type="radio" name="category" value="physiology" id="radio-physiology">&nbspPhysiology&nbsp&nbsp</li><br><br>
+      <li class = "newlis"><input type="radio" name="category" value="patient" id="radio-patient">&nbspPatient&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</li>
+       <li class = "newlis"><input type="radio" name="category" value="system" id="radio-system">&nbspSystem&nbsp&nbsp&nbsp&nbsp</li>
+      <li class = "newlis"><input type="radio" name="category" value="environment" id="radio-environment">&nbspEnvironment </li>
+      </ul>                                      
+      <br>
+										
+			<label>Properties</label>
+
+			<div id="field">
+
+			<input id="parameter0" class="tab2-para  newin" name = "parameter0">
+
+			<input type="text"   class="input modal-value newone" id="field0" name="property0" />
+	                                            
+      <button id="remove0" class=" remove-me newright" >-</button>
+											<!--button id="b1" class="btn add-more newright" type="button">
+												+
+											</button-->
+			<br>
+			</div>
+			
+			<br>
+			<hr>
+			&nbsp;&nbsp;<input type="button" class="btn-savenode" value="Save" id="createnode" name="savenode" onClick = "changenode()"/>									
+			&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;<input type="button" value="Add Property" class="btn-addfield add-more"/>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <input type="button" value="Clear All" class="btn-clear clearingall" onclick="this.form.reset()"/>
+
+      </form>
+      <div>
+	
+			<br>
+      </div>
+		  </div>
+      </div>
+                 
+                                    <!--div id = "newpopupbox" class = "newpops" hidden >   
+                                                     <h4>ADD PROPERTY</h4>
+                                                     <hr class="addedhrlines">
+                                                      Property<input id="newfieldname" class="newfields" name = "Property" placeholder="Property"><br>
+                                                      Value&nbsp;&nbsp;<input id="newfieldtype" class="newfieldtype" name = "Field type" placeholder="Value"><br><br>
+                                                     
+                                                     <input type="button" value="Close" class="btn-close" />&nbsp&nbsp&nbsp&nbsp;
+                                                     <input type="button" value="Add Property" class="btn-field add-more" />
+                                                     
+                                                     </div-->
+<!---------------------------------------------------end of code node dialog!-------------------------------------------------------------->
+      <div class="panel1" id="mainpanel">
+			</div>
+	  
+  
+
+      <div class="newreldetailstext" id ="newreldetailstextmodal"> 
+      </div>
+      <div class="conformationbox" id ="conformationbox">
+	    <div id = "deletecontent"> </div>
+
+      <p id = "newdata"></p>
+      <span id = "nodecontent" class="hidden"></span>
+      <div id = "contentdata"> </div>
+      </div> 				
+			<div class="dummypanel" id="dummypanel">
+			</div>
+			<div id="extruderRight"  class="{ title: '', url:'rightpanel'}"> </div> 
+			<div id="extruderLeft" class="a {title:'', url:'leftpanel'}" > </div>
+			<!--<div id= "adding-more"><button  value="Open the slide Panel" id="newbtn-slidepanel"></button></div>!-->
+      <a id="trigger2" class="trigger right active" href="/api/logout" style="position: absolute; top: 6px;">Logout</a> 
+      <!--div id = "newiddiv">
+        <li><a href="/api/logout" id="logout-option"></i> Logout</a></li>
+      </div-->
+      
+			         
+
+      <div id="slider" class="slider">
+    
+
+        <!-- panel content goes here -->
+      </div><!-- /panel -->
+
+    <!-- header -->
+    <!-- content -->
+    <!-- footer -->
+
+			<!-----------------------------------------  code for edge dialog !------------------------------------------------------------------------------------------>		
+	    <div id ="pathnewform">
+	    <h4 id ="edgeheading">EDGE/RELATIONSHIP</h4>
+                     <hr class = "edgelines">
+      <form id = "relforms">
+		<!--label>Source Node:</label><span id = "sourcerel"> </span><br><br>
+		<label>Destination Node:</label><span id = "destrel"> </span><br><br!-->
+      &nbsp&nbsp<span id = "newsourcerel"> </span>&nbsp&nbsp&nbsp&nbsp<button class ="newtogglebtn" value="Multipledirection" id="multipledirections"></button>                   
+      &nbsp&nbsp&nbsp&nbsp<span id = "newdestrel"> </span>      <br><br><br>
+  		<label>Relationship</label>
+  		<input type="text"  autocomplete="off" class="input modal-value newone" id="rel1" name="Relationship" placeholder="Value"/><br>
+		
+		  <br>
+									
+							
+						                 
+			<label>Properties</label>
+
+			<div id="fieldnew">
+
+			<input id="relparameter1" class="tab2-paranewrel  newin" name = "Parameter1">
+                            
+			<input type="text"  autocomplete="off" class="input modal-value newrelone" id="relfield1" name="Field1" placeholder="Value"/>
+
+			<button id="b0" class="btnnew newright" >-</button>
+			<br>
+			</div>
+			<br>
+      <hr>
+      <input type="button" class="btn-saverel" value="Save" id="saverel" name="saverel" onClick = "createrel()"/>
+      &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp;<input type="button" value="Add Property" class="btn-addfield" id = "b2"/>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" value="Clear All" class="btn-reset clearingall" onclick="this.form.reset()"/>
+			</form>
+			</div>
+										
+
+		  </div>	 		
+	<!-----------------------------------------  end of code for edge dialog !------------------------------------------------------------------------------------------>	
+		
+    	<link rel="stylesheet" href="js-lib/css/d3app.css">
+    	<link rel="stylesheet" href="js-lib/css/contextmenu.css">
+    	
+    	<script src ="js-lib/js/contextmenu.js" type="text/javascript"></script>
+    	<script src="js-lib/js/d3.min.js" type="text/javascript"></script>
+    	<script src="js-lib/js/jquery.popupoverlay.js"></script>
+    	
+      <link rel="stylesheet" href="js-lib/css/mbExtruder.css" media="all" type="text/css">  
+      <script src="js-lib/js/jquery.hoverIntent.min.js" type="text/javascript"></script>
+      <script src="js-lib/js/jquery.mb.flipText.js" type="text/javascript" ></script>
+      <script src="js-lib/js/mbExtruder.js" type="text/javascript"></script>
+      
+      
+      <script src="js-lib/js/slidereveal.js" type="text/javascript"></script>
+    	<script src="app/js/graphfeatures.js" type="text/javascript"></script>
+    	<script src="app/js/graphgenerator.js" type="text/javascript"></script>	
+
+      <script src="js-lib/js/bootstrap3-typeahead.js"></script>
+
+      <script type="text/javascript">
+
+      var jsonString = {};
+      var searchTable;
+
+
+     /** $(document).ready(function() {
+
+        // Initialize the Typeahead
+        initializeTypeAhead();
+
+      });  // $(document).ready(function()) **/
+
+      /**
+       * Initializes the searchable terms from termsmaster mongodb, 
+       * the collection is db.terms. It performs multiple functions
+       * 1. Gets all the "terms" aynchronously and initializes the typeahead
+       * 2. On selecting the term, automatically populates the fields with details
+       * 
+      */
+      function initializeTypeAhead() {
+        /*
+        var colors = ["red", "blue", "green", "yellow", "brown", "black"];
+        $('#termtypeahead').typeahead({source: colors});
+        */
+
+        // The JSON returns the following format
+        /*
+        [{"term": "asthma"}, {"term": "cholera"}, {"term": "Typhoid"}, {"term": "Cough"}, {"term": "Wheezing"}, {"term": "coughing"}, {"term": "Wheez"}, {"term": "Test"}, {"term": "test10"}]
+        */
+
+        console.log("it is in typeahead");
+        var termsData = [];
+
+        $.getJSON('app/data/typeahead_term.json', function(terms){
+          //console.log(terms);
+          $("#termtypeahead").typeahead({source:terms});
+        });
+        
+        /*
+        $.getJSON('app/data/typeahead_term.json', function(terms){
+
+          //  alert(terms);
+
+          $.each(terms, function(index, values){
+            // console.log(values);
+            $.each(values, function(k, v){
+              // console.log(v);
+              termsData.push(v);
+
+            }); 
+
+            alert("Yipeee!");
+
+             $("#termtypeahead").typeahead("destroy");
+
+             $("#termtypeahead").typeahead({
+                source: termsData,
+               /** updater: function(item) {
+                  console.log("I am inside updater function for typeahead");
+
+                  // display the terms and generate the JSON savable term data
+                  gettermdetails(item);
+
+                  return item;
+                } **/
+            /*  });
+
+          });
+          
+
+          */
+          //console.log(termsData);
+
+         
+
+       // });
+
+
+    } /* ----- End of initializeTypeAhead ---- */
+
+            /**
+       * Compute the savable terms and displays dynamically as "Database terms"
+       * Gets the value of each field and computes the JSON string
+       *
+       * @param 
+       * 
+      */
+
+      function generateJSONTerms(){
+       
+        var term_input = document.getElementById('term_input').value;
+        var loinc_input = document.getElementById('loinc_input').value;
+        var icd_input = document.getElementById('icd_input').value;
+        var snomed_input = document.getElementById('snomed_input').value;
+        var rxnorm_input = document.getElementById('rxnorm_input').value;
+        var mesh_input = document.getElementById('mesh_input').value;
+        var synonyms_input = document.getElementById('synonyms_input').value;
+
+      //  console.log(loinc_input);
+        // Get the values of categories selected
+
+        /*var unknowncheckbox = document.getElementById('unknowncheckbox').checked;
+        var geneticscheckbox = document.getElementById('geneticscheckbox').checked;
+        var physiologycheckbox = document.getElementById('physiologycheckbox').checked;
+        var patientcheckbox = document.getElementById('patientcheckbox').checked;
+        var systemcheckbox = document.getElementById('systemcheckbox').checked;
+        var environmentcheckbox = document.getElementById('environmentcheckbox').checked;*/
+
+        // alert(term_input);
+
+        var synonymsArray = [];
+        var synonymsArrayWithCommaAndSpaceSeparated = [];
+        // First split words which are ", " (comma and space separated)
+        synonymsArrayWithCommaAndSpaceSeparated = synonyms_input.split(", ");
+
+        // Second split words which are "," (comma separated)
+        len = synonymsArrayWithCommaAndSpaceSeparated.length;
+        for (var i=0; i<len; i++) {
+        text = synonymsArrayWithCommaAndSpaceSeparated[i].split(",");
+        if (text.length > 0){
+        for (var j =0; j < text.length; j++) {
+        synonymsArray.push(text[j])
+        }
+        }
+        else {
+        synonymsArray.push(text);
+        }
+        }
+
+        var myObj = {
+        term : term_input,
+        concepts :[
+                  { 'loinc': loinc_input },
+                  { 'icd10': icd_input },
+                  { 'snomed': snomed_input },
+                  { 'rxnorm': rxnorm_input },
+                  { 'mesh': mesh_input }
+                ],
+          /*category:[
+                      {'unclassified': unknowncheckbox},
+                      {'genetics' : geneticscheckbox},
+                      {'physiology' : physiologycheckbox},
+                      {'patient' : patientcheckbox },
+                      {'system' : systemcheckbox},
+                      {'environment' : environmentcheckbox}
+                    ],*/
+        synonyms: synonymsArray
+        };
+
+        jsonString = JSON.stringify(myObj);
+
+        $("#final_saving_term").text(jsonString); 
+        }
+
+
+      /**
+       * Ensure that the required field is filled with data
+       * The required field is the "term" field
+       *
+       * @param {event} event
+       * 
+      */
+      function OnTermInput(event) {
+        var searchstring = event.target.value.trim();
+        var searchstringlength = searchstring.length;
+        var term_input_data = document.getElementById('term_input').value;
+        var termlength = term_input_data.length;
+
+
+
+      if (termlength > 0) {
+          // alert('insider');
+      $("#term_input_validate").fadeOut("slow");
+      $("#termentersuccessalert").fadeOut("slow");
+
+      generateJSONTerms();
+
+      }
+      else {
+      $("#term_input_validate").fadeIn("slow");
+
+        }
+        searchstring = "";
+      }
+
+      /**
+       * textonnedown - It stops the propogration
+       * @return {[type]} [description]
+       */
+      function OnTextAreaKeyDown(){
+       $('textarea').keydown(function(e) {
+               e.stopPropagation();
+       });
+       
+      }
+
+
+
+    </script>
+		
+	 
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+           <script>
+                     /*****************************************Accordion for update panel*****************************/
+ //function accordiondata (){                  
+      $(function() {
+    $( "#newpanel" ).accordion({
+      header: "h4",
+      event: "click",
+   //autoHeight: true
+   heightStyle:"content"
+    });
+  });
+               
+           </script>
+           
+           
+           
+           
+           
+           
+           
+              <div id = "panel"> 
+            <div class="panel2">
+                <div class="zoom-heading">
+                    <div class = "newhead">
+                <span class ="updatehead"><b>UPDATES</b></span><br><br>
+                </div>
+                    <form id = "totaldata" >
+                    <div class = "paneldata" id="newpanel">
+                        <!--<h4><p id = "headupdate1" class="newheadupdate1"></p><p id = "datenew" class="newdatenew"></p></h4>-->
+                        <!--<div class="newdetailstext" id ="newdetailstextmodal">-->
+                        <!--</div>-->
+                         <div class = "nodedataonly" id = "compnodedatasonly">   
+                        <div class="update-item blank" hidden>
+                            <h4 class = "headingone"> <p id = "headupdate1" class="newheadupdate1"> </p></h4>
+                            <div class="newdetailstext" id ="newdetailstextmodal">
+                                <p id = "datenew" class="newdatenew"> </p>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="update-rel blank" hidden>
+                            <h4 class = "headingonerel"><p id = "headupdaterel1" class="newheadupdaterel1"></p></h4>
+                            <div class="newdetailsreltext" id ="newdetailsreltextmodal">
+                                <p id = "datenewrel" class="newdatenewrel"></p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </form>
+                    <div class = "newsubmitbutton" id="submitbtn" style="position:fixed; bottom:5px;" onclick="totalsubmit()">
+                        <hr>
+                      <button id="newbtn-submit" class="newsubmit-btn" style="display:inline-block;position:fixed; bottom:20px;background-color:green;border:0.5px green;color:white;" value="Submit" type="submit">SUBMIT</button>
+                    </div>
+              
+                </div>
+            </div>
+
+            <!--a id="trigger1"  href="#" style="position: fixed; top: 20px;">panel 1</a-->
+            
+            </div>

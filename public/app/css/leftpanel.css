@@ -1,0 +1,9 @@
+	.dataTables_wrapper .dataTables_filter {
+		float: right;
+		margin-right: 196px;
+		margin-top: -83px;
+		text-align: right;
+	}
+	th a {
+		color: black;
+	}

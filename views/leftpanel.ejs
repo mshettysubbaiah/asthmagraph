@@ -1,0 +1,306 @@
+              <script src="js-lib/js/jquery.dataTables.js"></script>
+              <script src="js-lib/js/bootstrap3-typeahead.js"></script>
+              <link href="js-lib/css/jquery.dataTables.css" rel="stylesheet">
+
+              <link href="app/css/leftpanel.css" rel="stylesheet">
+              <br>
+
+
+              <div class = "leftpanels" style="height:80%;margin-right:-70px;">
+
+              <div class="panel-round1" style="text-align: left;">
+
+
+              <div class="col-md-5 col panel-round1">
+                    <br>
+
+            <!-- Search Standard Terms input -->
+          <!--  <div class="row">
+              <input type="text" autocomplete="off" class="form-control input-sm required" id="sSearch_input" oninput="OnTermInput(event)" placeholder="Search for standard terms" onkeydown="myFunction()" required>
+            </div> <!-- End of input box -->
+            <br>
+
+      <!-- Checkboxes to select appropriate databases -->
+
+
+            <div class="row" style="font-size:12px; margin-left:10px;">
+              <label class="checkbox-inline">
+                  <input type="checkbox" id="All" value="All"  checked>
+                  All </label>
+
+              <label class="checkbox-inline" style="padding-left:5em;">
+                  <input type="checkbox" id="icd10" value="icd10"  >
+                  ICD10 </label>
+              <label class="checkbox-inline" style="padding-left:3em;">
+                  <input type="checkbox" id="snomed" value="snomed" >
+                  SNOMED </label>
+              <br>
+              
+              <label class="checkbox-inline ">
+                  <input type="checkbox" id="loinc" value="loinc"  >
+                  LOINC </label>
+              <label class="checkbox-inline " style="padding-left:3em;">
+                  <input type="checkbox" id="rxnorm" value="rxnorm"  >
+                  RxNorm </label>
+              <label class="checkbox-inline " style="padding-left:2.2em;">
+                  <input type="checkbox" id="mesh" value="mesh" >
+                  MESH </label>
+            </div> <!-- End of Check boxes -->
+            <br>
+
+            <!-- Datatable for the search results -->
+            <div class="row">
+              <table id="example" class="display" style="word-break:break-all;margin-left:1px; " >
+                  <thead>
+                      <tr>
+                          <th>ID</th>
+                          <th>Term</th>
+                          <th>DB</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+
+                  </tbody>
+                </table>
+            </div>  <!-- End of datatables -->
+             </div> <!-- col-md-6 for standard term search -->
+
+
+
+                <div class="col-md-6 panel-round1">
+                <div class ="col">
+
+            <!-- BEGIN THE TAB -->
+
+                <ul class="nav nav-tabs" id="termstabpanel" role="tab">
+                <li class="active"><a  href="#termentry" role="tab" data-toggle="tab"><b>Term Entry</b></a></li>
+                <li class="termedit"><a  href="#termnewedit" role="tab" data-toggle="tab"><b>Term Edit</b></a></li>
+                </ul>
+                </div>
+
+                <!-- BEGIN THE TAB CONTENT -->
+
+                    <div class="tab-content">
+
+
+
+
+                    <div id="termentry" class="tab-pane fade in active" > 
+
+                    <div class="panel-round1 panel-body">
+
+                    <form id="newdatatermstosave" action="">
+
+
+
+
+                
+
+                <div class="row">
+                  
+                  <div class="col-md-4"><h4>Enter Term</h4></div>
+                </div>
+
+
+                <div class="row" >
+                  <div class="col-md-10">
+                    <input type="text" autocomplete="off" class="form-control required" id="term_input" oninput="" placeholder="Term is a required field" onkeydown="myFunction()" required>
+                    <!--span><font id='term_input_validate' color="red"><h6>Term is required .</h6></font></span-->
+                  </div>
+                </div>
+
+                 <div>
+                  <br>                 
+                  <textarea class="form-control" rows="3" autocomplete="off" id="synonyms_input" placeholder="Seperate Synonyms with comma"  oninput="OnTermInput(event)" onkeydown="OnTextAreaKeyDown()"></textarea>
+                  <br>
+                </div>
+                
+     <div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="loinc_input" placeholder="LOINC ID"  onkeydown="myFunction()" oninput="OnTermInput(event)">
+                </div>
+              </div>
+              
+              <div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control addspace" id="icd_input" placeholder="ICD10 ID"  onkeydown="myFunction()" oninput="OnTermInput(event)">
+                </div>
+              </div>
+              <br>
+              &nbsp;&nbsp;<div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="snomed_input" placeholder="SNOMED ID"  onkeydown="myFunction()" oninput="OnTermInput(event)">
+                </div>
+              </div>
+              <br>
+              <div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="rxnorm_input" placeholder="RxNorm"  onkeydown="myFunction()" oninput="OnTermInput(event)">
+                </div>
+              </div>
+              <br>
+             &nbsp;<div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="mesh_input" placeholder="MESH ID"  onkeydown="myFunction()" oninput="OnTermInput(event)">
+                </div>
+              </div>
+
+                
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+                  <br>
+             <!--   <div class="panel panel-default">
+                  <h5> Database terms </h5><br> -->
+                  <p id="final_saving_term" style="color:green;" class="hidden" ></p>
+              <!--  </div> -->
+                  
+                <button type="button" class="btn btn-danger btn-sm" id="termsRefreshBtn" onclick = "this.form.reset()">
+                  <span class="glyphicon glyphicon-refresh"></span>&nbsp;&nbsp;&nbsp;Clear All
+                </button>
+               
+                <button type="button" class="btn btn-primary btn-sm" id="termsSubmitBtn">
+                  <span class="glyphicon glyphicon-save"></span>&nbsp;&nbsp;&nbsp;Submit
+                </button>
+              
+                <!--button type="button" class="btn btn-danger btn-sm" id="termsDeleteBtn">
+                  <span class="glyphicon glyphicon-remove" id="termsDeleteBtn"></span> Delete
+                </button-->
+                
+                <div class="alert alert-success" role="alert" id="termentersuccessalert" style="display:none">Well done! Data inserted successfully </div>
+                <div class="alert alert-success" role="alert" id="termdeletesuccessalert" style="display:none">Well done! Data deleted successfully </div>
+                  </form> <!-- End of Form -->
+                </div>  <!-- /panel-body -->
+              </div>  <!-- termentry -->
+        
+              <div id = "termnewedit" class = "tab-pane fade" >
+                <div class = "panel-round1 panel-body">
+
+                
+
+
+              <form id="datatermstoedit" action="">
+
+                 
+              <div class="row">
+                <div class="col-md-4"><h4>Search Term</h4></div>                        
+              </div>
+
+              <div class="row">
+              <div class="col-md-8" >
+                <input type="text" autocomplete="off" class="form-control" id="termtypeahead" placeholder="Search Terms" onkeydown="myFunction()" data-provide = "typeahead">
+              </div>                        
+              </div>
+                <div class="row">
+                  
+                  <div class="col-md-4"><h4>Edit Term</h4></div>
+                </div>
+
+
+                <div class="row" >
+                  <div class="col-md-10">
+                    <input type="text" autocomplete="off" class="form-control required" id="term_input_edit" oninput="OnTermInputedit(event)" placeholder="Term is a required field" onkeydown="myFunction()" required>
+                    <!--span><font id='term_input_validate' color="red"><h6>Term is required .</h6></font></span-->
+                  </div>
+                </div>     
+
+                      <!--div class="row">
+                        <br>
+                        <div class="col-md-4"><h4>Enter Terms</h4></div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-10">
+                          <input type="text" autocomplete="off" class="form-control required" id="term_input" oninput="OnTermInput(event)" placeholder="Term is a required field" onkeydown="myFunction()" required>
+                          <!--span><font id='term_input_validate' color="red"><h6>Term is a required field.</h6></font></span-->
+                        <!--/div>
+                      </div-->
+
+
+               <div>
+                <br>                 
+                <textarea class="form-control" rows="3" autocomplete="off" id="synonyms_input_edit" placeholder="Seperate Synonms with commas"  oninput="OnTermInputedit(event)" onkeydown="OnTextAreaKeyDown()"></textarea>
+                <br>
+              </div>
+              
+
+              <div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="loinc_input_edit" placeholder="LOINC ID"  onkeydown="myFunction()" oninput="OnTermInputedit(event)">
+                </div>
+              </div>
+              
+              <div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control addspace" id="icd_input_edit" placeholder="ICD10 ID"  onkeydown="myFunction()" oninput="OnTermInputedit(event)">
+                </div>
+              </div>
+              <br>
+              &nbsp;&nbsp;<div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="snomed_input_edit" placeholder="SNOMED ID"  onkeydown="myFunction()" oninput="OnTermInputedit(event)">
+                </div>
+              </div>
+              <br>
+              <div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="rxnorm_input_edit" placeholder="RxNorm"  onkeydown="myFunction()" oninput="OnTermInputedit(event)">
+                </div>
+              </div>
+              <br>
+             &nbsp;<div class="row" style="float:left">
+                <div class="col-md-10">
+                  <input type="text" autocomplete="off" class="form-control" id="mesh_input_edit" placeholder="MESH ID"  onkeydown="myFunction()" oninput="OnTermInputedit(event)">
+                </div>
+              </div>
+              <br>
+              <br>
+              <br>
+              <br>
+              <br>
+              
+              
+                
+             <!-- <div class="panel panel-default">
+                <h5> Database terms </h5><br> -->
+                <p id="final_saving_term_edit" color="green" class="hidden"></p>
+            <!--  </div>!-->
+                
+                <button type="button" class="btn btn-danger btn-sm" id="termsRefreshBtn_edit" onclick = "this.form.reset()" >
+                <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;&nbsp;Delete
+              </button>
+             <br>
+              <button type="button" class="btn btn-primary btn-sm" id="termsUpdateBtn_edit" style="float:right;">
+                <span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;&nbsp;Update
+              </button>
+            
+                      <!--button type="button" class="btn btn-danger btn-sm" id="termsDeleteBtn">
+                        <span class="glyphicon glyphicon-remove" id="termsDeleteBtn"></span> Delete
+                      </button-->
+              <br>
+              <br>
+              <div class="alert alert-success" role="alert" id="termentersuccessalert" style="display:none">Well done! Data inserted successfully </div>
+              <div class="alert alert-success" role="alert" id="termdeletesuccessalert" style="display:none">Well done! Data deleted successfully </div>
+            </form> <!-- End of Form  for term edit -->
+          </div>
+        </div> <!-- termedit -->
+        
+                
+        </div>
+      
+    
+    
+  
+      
+    </div>
+  
+
+
+  </div>
+
+</div>
+
+
+
+
+<script src = "app/js/leftpanelapp.js" type = "text/javascript">

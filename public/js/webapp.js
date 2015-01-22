@@ -1,5 +1,5 @@
-$('document').ready(function() {
-
+//$('document').ready(function() {
+    var newtoken;
 	window.Store = {
 		user: null,
 		setUser: function(user) {
@@ -17,9 +17,8 @@ $('document').ready(function() {
 	};
 
 
-
-
-
+    console.log(window);
+      var newtoken;
 
 	////////////////////////////////////////////////////////////////
 	// Auth Token
@@ -44,7 +43,18 @@ $('document').ready(function() {
 
                 Store.setUser({email: email, message: data.data.message, token: data.data.token});
                 var user = Store.getuser();
+                newtoken = user.token;
+                console.log(newtoken);
                 alert(user.token);
+              //  window.val = user.token;
+               // alert(newtoken);
+                $.cookie('back_to_url_onPage_referesh', 1);
+                $.cookie('user', email);
+                $.cookie('Token',user.token,{ path: '/' });
+                
+                $('#new_saving_token').html(user.token);
+                console.log($('#new_saving_token').html());
+                console.log($.cookie('Token'));
                 console.log("Finished setting user: " + email + ", Token: " + data.data.token);
                 // console.log("You're now logged in. Try clicking the 'Test Token' button next.");
                 
@@ -59,6 +69,7 @@ $('document').ready(function() {
 		});
 	});
 
+   //  console.log(newtoken);
 
     ////////////////////////////////////////////////////////////////
     // Register/Signup Token
@@ -69,10 +80,10 @@ $('document').ready(function() {
         var email = $('#regemail').val();
         var password = $('#regpassword').val();
 
-        console.log(username);
-        console.log(email);
-        console.log(password);
-        
+            console.log(username);
+            console.log(email);
+            console.log(password);
+            
         $.ajax({
             type: "POST",
             cache: false,
@@ -129,4 +140,4 @@ $('document').ready(function() {
         console.log('Testing Logout');
 
     });
-})
+//})

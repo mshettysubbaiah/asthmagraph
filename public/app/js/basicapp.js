@@ -1,40 +1,40 @@
-       var newnodelink,
-            newpath,
-            validrel,
-            newnode,
-            validnode,
-            newnodenew,
-            nodepointx,
-            nodepointy;
-            var next = 1,
-             relnext = 1,
-            newcounter = 0,
-            newcut = 0 ,
-            dialognewnodeid,
-             newlocalcoord,
-             newdragging,
-             newdraggingscale,
-             currentzoom,
-             newpointx,
-             newpointy,
-             newpoint,
-             onetransit ,
-             lookpos,
-             currentpos,
-             pj,
-             lastpos,
-             pasteid,
-             totaldata = {},
-             index = 0,
-             term_data;
+     var newnodelink,
+          newpath,
+          validrel,
+          newnode,
+          validnode,
+          newnodenew,
+          nodepointx,
+          nodepointy;
+          var next = 1,
+           relnext = 1,
+          newcounter = 0,
+          newcut = 0 ,
+          dialognewnodeid,
+           newlocalcoord,
+           newdragging,
+           newdraggingscale,
+           currentzoom,
+           newpointx,
+           newpointy,
+           newpoint,
+           onetransit ,
+           lookpos,
+           currentpos,
+           pj,
+           lastpos,
+           pasteid,
+           totaldata = {},
+           index = 0,
+           term_data;
          
            
-          $('.dummypanel').css({'height': $(window).innerHeight()});
+      $('.dummypanel').css({'height': $(window).innerHeight()});
      //  if(zoom.scale() != "1"){
        //         console.log('it os there');
                 
          //       }
-        	$(document).on("contextmenu", ".dummypanel", function(e) {
+    	$(document).on("contextmenu", ".dummypanel", function(e) {
       				console.log(e.pageX);
       				//console.log(e.layerX);
       			var offset = $('rect').offset();
@@ -68,32 +68,32 @@
                                }
                                else{
                                    console.log(this);
-                               }
-                          }
-                	},
+                     }
+                }
+      	},
                 	items : {
                 	    "paste" : {
                               name : "Paste",
                               icon : "paste"
-                          },
+        },
                 		"CreateNode" : {
                 			name : "CreateNode",
                 			icon : "add"
-                		},
-                	}
-                });
+    		},
+      	}
+      });
 
-                });
+      });
            
-        	   function getMousePos(canvas, evt) {
+	   function getMousePos(canvas, evt) {
             var rect = $("#newcanvasid").getBoundingClientRect();
             return {
                 x: evt.clientX - rect.left,
                 y: evt.clientY - rect.top
-            };
-        }
+        };
+    }
 
-          function clickposition(){
+    function clickposition(){
               
             $(window).on('click',function(e){
              var offset = $('circle').offset();
@@ -104,5 +104,5 @@
              
               console.log(e.pageX);
               console.log(e.pageY);
-          });
-          }
+      });
+      }

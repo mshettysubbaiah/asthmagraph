@@ -15,28 +15,30 @@ $(document).ready(function() {
 	var newcounters;
 	var startarrow = ' ', endarrow = ' ';
 	var newnodeids;
-    $('.flap').css('background','url(../images/leftarrowimages.jpg)!important')
-	$("span[aria-live='assertive']").hide();
-	// hide the sliding panel
-	$("#slider").hide();
-	$("#slider").slideReveal("hide");
+	    $('.flap').css('background','url(../images/leftarrowimages.jpg)!important')
+		$("span[aria-live='assertive']").hide();
+		// hide the sliding panel
+		$("#slider").hide();
+		$("#slider").slideReveal("hide");
 	var width = $(window).width(), height = $(window).height();
 	var p0 = [width / 2, height / 2, height];
 	var center_point = [width / 2, height / 2, height];
-    
-
+	//console.log(Store.getuser());
+    		console.log($.cookie('Token'));
+    var tokenofuser = $.cookie('Token');
+    //console.log(newtoken);
 	//console.log(zoom.scale());
 	//$('.newsubmitbutton').show
-	$("#adding-more").hide();
-	$("body").css("overflow", "hidden");
-	///////////////////////////////////////Button data for Edge dialog having source & destination Node////////////////////////////////
-	//$('#multipledirections').html('--------->');
-	$('#multipledirections').html('<span class="glyphicon glyphicon-arrow-right"></span>');
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	$("#newdetails").hide();
-	console.log($(document).innerHeight());
+		$("#adding-more").hide();
+		$("body").css("overflow", "hidden");
+		///////////////////////////////////////Button data for Edge dialog having source & destination Node////////////////////////////////
+		//$('#multipledirections').html('--------->');
+		$('#multipledirections').html('<span class="glyphicon glyphicon-arrow-right"></span>');
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		$("#newdetails").hide();
+		console.log($(document).innerHeight());
  $(function () {
-$('#termnewedit  a').tab('show');//click(function (e) {
+		$('#termnewedit  a').tab('show');//click(function (e) {
  // e.preventDefault()
 //  $(this).tab('show')
 //})
@@ -341,8 +343,8 @@ function changenode() {
 		var newminutes = dnewdates.getMinutes();
 		var newseconds = dnewdates.getSeconds();
 		var newformatdate = newmonth + '/' + newdate + '/' + newyear + "   " + newhours + ':' + newminutes + ':' + newseconds;
-		console.log(dnewdates.getMonth() + 1);
-		console.log(newformatdate);
+				console.log(dnewdates.getMonth() + 1);
+				console.log(newformatdate);
 		/*------------------------------------Displaying node in updates section----------------------------------*/
 		//   $('#headupdate1').html('<span id = "nodehead'+ newnodenew.id +'" class = "newnodehead"><b>' +'Node' + newnodenew.id + '<b></span>' );
 		//newonenode =  $('#headupdate1').html();
@@ -364,12 +366,12 @@ function changenode() {
 		var old_data = new_panel.html();
 		var new_update_item = $("#newpanel .update-item.blank");
 
-		$("#newpanel .update-item").each(function() {
+	$("#newpanel .update-item").each(function() {
 			if ($(this).attr("value") == newnodenew.id) {
-				new_update_item = $(this);
-				old_data = "";
+					new_update_item = $(this);
+					old_data = "";
 			}
-		});
+	});
 
 		new_update_item.removeClass("blank").removeAttr("hidden");
 		var new_update_date = $(".update-item .newdetailstext").first();
@@ -392,10 +394,10 @@ function changenode() {
 		//  next+1  changed it to thatsdata.length
 		for ( i = 0; i <= thatsdata.length - 1; i++) {
 			//$("#newdetailstextmodal").hide();
-			$("#olddetailstextmodal").hide();
-			//$("#detailsspan" + newnodenew.id).append("<br>  " + thatsdata[i].name + " :  " + thatsdata[i].value);
-			$("#detailsspan" + newnodenew.id).append(thatsdata[i].name + " :  " + thatsdata[i].value + "<br>");
-			$("#olddetailsspan" + newnodenew.id).append(thatsdata[i].name + " :  " + thatsdata[i].value + "<br>");
+				$("#olddetailstextmodal").hide();
+				//$("#detailsspan" + newnodenew.id).append("<br>  " + thatsdata[i].name + " :  " + thatsdata[i].value);
+				$("#detailsspan" + newnodenew.id).append(thatsdata[i].name + " :  " + thatsdata[i].value + "<br>");
+				$("#olddetailsspan" + newnodenew.id).append(thatsdata[i].name + " :  " + thatsdata[i].value + "<br>");
 		}
 
 		console.log(thatsdata.length);
@@ -516,24 +518,24 @@ function changenode() {
 	//}
 
 	//$('#newpanel').append('<h4><p id = "headupdateold'+(newnodenew.id)+'" class = "oldheadupdate"></p><p id = "dateold'+newnodenew.id + '"  class = "olddateupdate"></p>');
-	console.log(next);
-	//$('#formhead'+(newnodenew.id)).html('<p id = "headupdateold'+(newnodenew.id)+'"class = "oldheadupdate">abcd</p><br><p id = "dateold'+(newnodenew.id) + '"class = "olddateupdate">efgh</p>' );
-	//$("#headupdateold"+newnodenew.id).html(last_item_title);
-	//$("#dateold"+newnodenew.id).append(last_item_date);
-	//$("<div id='olddetailstextmodal" + (newnodenew.id) + "'></div>").insertAfter('#formhead'+(newnodenew.id));
-	dialog.dialog("close");
-	$('#dialog-form').popup('hide');
-	//updating the form data in the panel
-	$('#frm-data')[0].reset();
-	$("#newpanel").accordion("refresh");
-	index = index + 1;
-	$("#newpanel").accordion("option", "icons", {
-		"header" : " ",
-		"activeHeader" : " "
-	});
-	$("#newpanel").accordion("option", "collapsible", true);
-	$("#newpanel").accordion("option", "active", false);
-}
+				console.log(next);
+				//$('#formhead'+(newnodenew.id)).html('<p id = "headupdateold'+(newnodenew.id)+'"class = "oldheadupdate">abcd</p><br><p id = "dateold'+(newnodenew.id) + '"class = "olddateupdate">efgh</p>' );
+				//$("#headupdateold"+newnodenew.id).html(last_item_title);
+				//$("#dateold"+newnodenew.id).append(last_item_date);
+				//$("<div id='olddetailstextmodal" + (newnodenew.id) + "'></div>").insertAfter('#formhead'+(newnodenew.id));
+				dialog.dialog("close");
+				$('#dialog-form').popup('hide');
+				//updating the form data in the panel
+				$('#frm-data')[0].reset();
+				$("#newpanel").accordion("refresh");
+				index = index + 1;
+				$("#newpanel").accordion("option", "icons", {
+					"header" : " ",
+					"activeHeader" : " "
+	   });
+				$("#newpanel").accordion("option", "collapsible", true);
+				$("#newpanel").accordion("option", "active", false);
+	}
 
 /*-----------------------------------end of Update section for node data and time-stamp with tool-tip-----------------------------*/
 /*--------------------Conformation box for node deletion----------------*/
@@ -587,7 +589,7 @@ function transition(svg, start, end) {
 	//    vis.attr("transform", transform(start));
 	vis.attr("transform", transform(start)).transition().delay(250).duration(i.duration * 2).attrTween("transform", function() {
 		return function(t) {
-			return transform(i(t));
+		return transform(i(t));
 		};
 	}).each("end", function() {
 		trans_ended = true;

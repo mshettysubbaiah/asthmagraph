@@ -77,9 +77,12 @@
     <script src="assets/lib/jquery/jquery.min.js"></script>
     <script src="assets/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src='/js/webapp.js'></script>
+    <script src='/js/jquery.cookie.js'></script>
+    
     <script type="text/javascript">
-    (function($) {
-        $(document).ready(function() {
+   // console.log(newtoken);
+   // (function($) {
+    //    $(document).ready(function() {
           $('.list-inline li > a').click(function() {
             var activeForm = $(this).attr('href') + ' > form';
             //console.log(activeForm);
@@ -89,8 +92,8 @@
               $(activeForm).removeClass('animated fadeIn');
             }, 1000);
           });
-        });
-      })(jQuery);
+      //  });
+     // })(jQuery);
     </script>
   </body>
 </html>

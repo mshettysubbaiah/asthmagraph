@@ -17,7 +17,7 @@ var cardinalityFiltered;
 
 var async           = require('async');
 var tokenvalidator  = require('./accountauth');
-var resultCount = 0;
+var resultCount;
 
 // Create end points for /api/terms for GET
 exports.getSolrSearchResults = function(req, res){
@@ -87,8 +87,6 @@ exports.getSolrSearchResults = function(req, res){
 // Create end points for /api/terms for GET
 exports.getSolrSearchResultsAsync = function(req, res){
 
-    // console.log("I am here");
-
     tokenvalidator.asyncSeries(req, res, function(err, isTokenValid){
 
         console.log("Token is valid:", + isTokenValid);
@@ -101,7 +99,7 @@ exports.getSolrSearchResultsAsync = function(req, res){
                 } else {
                     // console.log("Good");
                     // console.log(resultsData);
-                    res.json({errorcode: 0, message: 'Found terms!', data: resultsData});
+                    res.json(resultsData);
                 }
             });
         } else {
@@ -144,7 +142,7 @@ function getSearchResultsAsync(req, res, callback) {
     
     dataTableResult = [];
 
-    resultCount = 0;
+    resultCount = 1;
     cardinality = 0;
     cardinalityFiltered = 0;
 
@@ -154,9 +152,7 @@ function getSearchResultsAsync(req, res, callback) {
             // 
             function(callback){
 
-                console.log("1");
-
-                console.log(" ICD :" +icd);
+                console.log("1. ICD :" + icd);
 
                 if (icd == "true") {
                     var data = runICD10Queries(sSearch, function(err, data){
@@ -170,7 +166,7 @@ function getSearchResultsAsync(req, res, callback) {
             },
             function(callback){
 
-                console.log("2");
+                console.log("2. Loinc :" + loinc);
 
                 if (loinc == "true") {
                     var data = runLOINCQueries(sSearch, function(err, data){
@@ -186,7 +182,8 @@ function getSearchResultsAsync(req, res, callback) {
             },
             function(callback){
 
-                console.log("3");
+                console.log("3. SNOMED :" + snomed);
+
                 if (snomed == "true") {
                     var data = runSNOMEDQueries(sSearch, function(err, data){
                         console.log("3-A");
@@ -201,7 +198,7 @@ function getSearchResultsAsync(req, res, callback) {
             },
             function(callback){
 
-                console.log("4");
+                console.log("4. MeSH :" + mesh);
                 if (mesh == "true") {
                     var data = runMESHQueries(sSearch, function(err, data){
                         console.log("4-A");
@@ -215,7 +212,7 @@ function getSearchResultsAsync(req, res, callback) {
             },
             function(callback){
 
-                console.log("5");
+                console.log("5. RxNorm :" + rxnorm);
                 if (rxnorm == "true") {
                     var data = runRxNormQueries(sSearch, function(err, data){
                         console.log("5-A");
@@ -246,12 +243,23 @@ function getSearchResultsAsync(req, res, callback) {
 
             // console.log(dataTableResult);
             cardinalityFiltered = resultCount;
+            
             var finalDataTableData = {
                 "sEcho": sEcho,
                 "iTotalRecords": cardinality,
                 "iTotalDisplayRecords": cardinalityFiltered,
-                "aaData": dataTableResult
+                "data": dataTableResult
             };
+
+            /*
+           
+            var finalDataTableData = {
+                "sEcho": sEcho,
+                "totalRecordCount": cardinality,
+                "queryRecordCount": cardinalityFiltered,
+                "data": dataTableResult
+            };
+            */
             
             //console.log(finalDataTableData);
 

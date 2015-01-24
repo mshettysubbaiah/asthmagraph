@@ -24,6 +24,10 @@ exports.loginauthendpoints = function(app, passport) {
         var login = req.body.login;
         var email = req.user.email;
 
+        // console.log(req.session);
+
+        var sess = req.session;
+
         if (req.user) {
             Account.createUserToken(req.user.email, function(err, usersToken) {
                 // console.log('token generated: ' +usersToken);
@@ -36,7 +40,11 @@ exports.loginauthendpoints = function(app, passport) {
                 } else {
 
                     // Set the value of the token in the app
-                    app.set('token', usersToken);
+                    // app.set('token', usersToken);
+                    sess.email = email;
+                    sess.token = usersToken;
+
+                    // console.log(sess);
 
                     // return the token as response
                     res.json({
@@ -119,10 +127,15 @@ exports.loginauthendpoints = function(app, passport) {
      * @return {[type]}     [description]
      */
     app.post('/api/logout', function(req, res) {
+
         var incomingToken = req.headers.token;
-        console.log('LOGOUT: incomingToken: ' + incomingToken);
-        if (incomingToken) {
-            var decoded = Account.decode(incomingToken);
+
+        var sess = req.session;
+        var sessionToken = sess.token;
+
+        console.log('LOGOUT: sessionToken: ' + sessionToken);
+        if (sessionToken) {
+            var decoded = Account.decode(sessionToken);
             if (decoded && decoded.email) {
                 Account.invalidateUserToken(decoded.email, function(err, user){
                     if (err) {
@@ -166,7 +179,8 @@ exports.loginauthendpoints = function(app, passport) {
     app.get('/api/logout', function(req, res) {
 
         // get the saved token
-        var appsSavedToken = app.get('token');
+        // var appsSavedToken = app.get('token');
+
         console.log('LOGOUT: appsSavedToken: ' + appsSavedToken);
         
         if (appsSavedToken) {
@@ -277,7 +291,11 @@ var async = require('async');
  */
 exports.asyncSeries = function (req, res, callback) {
 
-    var token = req.headers.token;
+    //var token = req.headers.token;
+
+    var sess = req.session;
+
+    token = sess.token;
 
     if (!token) {
         var token = req.query.token;
@@ -285,7 +303,7 @@ exports.asyncSeries = function (req, res, callback) {
 
     console.log(token);
     var userData;
-    var userTokenData;
+    var userTokenData = token;
     var status;
     var isTokenValid = true;
     async.series([

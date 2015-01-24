@@ -25,14 +25,22 @@ exports.getTerms = function(req, res){
 
 		if (isTokenValid == true) {
 
-			Terms.find({}, function(err, terms) {
+			Terms.find({}, {"term": 1, _id:0}, function(err, terms) {
 				// console.log('found data');
 				// console.log(terms);
 				
 				if (err)
 					res.send(err);
 
-				res.json({errorcode: 0, message: 'Found terms!', data: terms});
+				var termsResults = [];
+
+				for (var i=0; i < terms.length; i++) {
+					// console.log(terms[i].term);
+					termsResults.push(terms[i].term);
+				}
+				// console.log(termsResults);
+
+				res.json({data: termsResults});
 			});
 		} else {
 			res.json({errorcode: 1, message: 'Token invalid, please login', data: ""});

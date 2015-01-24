@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var sleep = require('sleep');
 
 module.exports = function(app) {
 
@@ -14,7 +15,7 @@ module.exports = function(app) {
 	});
 
 	app.get('/login_new', function(req, res) {
-		res.render('login_new.ejs', { message: req.flash('loginMessage') });
+		res.render('login_new.ejs', { message: req.flash('loginMessage'), info: "" });
 
 	});
 
@@ -35,7 +36,7 @@ module.exports = function(app) {
 
 	app.get('/graphapp', function(req, res){
 
-		var appsSavedToken = app.get('token');
+/*		var appsSavedToken = app.get('token');
 
 		if (appsSavedToken) { 
 		
@@ -44,6 +45,22 @@ module.exports = function(app) {
 		} else {
 			res.redirect('/401');
 		}
+*/
+
+		// sleep.sleep(32);
+		//
+		// console.log(req.session);
+		// 
+		
+		if (req.session.email) {
+
+			res.render('graphapp', {info: 'Running Graph Application', err:null});
+		} else {
+
+			res.render('login_new.ejs', { message: req.flash('loginMessage'), info: "Authentication failed, please login again" });
+
+		}
+
 	})
 
 	app.get('/leftpanel', function(req, res){

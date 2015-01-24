@@ -44,27 +44,27 @@
                 Store.setUser({email: email, message: data.data.message, token: data.data.token});
                 var user = Store.getuser();
                 newtoken = user.token;
-                console.log(newtoken);
-                alert(user.token);
-              //  window.val = user.token;
-               // alert(newtoken);
-                $.cookie('back_to_url_onPage_referesh', 1);
-                $.cookie('user', email);
-                $.cookie('Token',user.token,{ path: '/' });
-                
-                $('#new_saving_token').html(user.token);
-                console.log($('#new_saving_token').html());
-                console.log($.cookie('Token'));
-                console.log("Finished setting user: " + email + ", Token: " + data.data.token);
-                // console.log("You're now logged in. Try clicking the 'Test Token' button next.");
+                // console.log(newtoken);
+                // $.cookie('back_to_url_onPage_referesh', 1);
+                // $.cookie('user', email);
+                // $.cookie('Token', user.token,{ path: '/' });
                 
                 // Upon successful login, redirect to /appspage
-                window.location.href = "/graphapp";
+                // 
                 
+                // alert("Wait for 30 sec");
+                window.location.href = "/graphapp";
             },
             error: function(data) {
-            	alert("Is this the message?");
-                alert(data.statusText);
+            	//alert("Is this the message?");
+                // alert(data.statusText);
+                // 
+                // 
+                
+                document.getElementById("loginErrorCode").innerHTML = data.info;
+
+                $("#loginErrorCode").fadeIn("slow");
+                //window.location.href = "/login_new";
             }
 		});
 	});

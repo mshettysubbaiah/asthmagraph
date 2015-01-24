@@ -7,6 +7,7 @@ var session 	= require('express-session');
 var passport 	= require('passport'); 		// Load passport package for authentication
 var ejs 		= require('ejs');
 var flash    	= require('connect-flash');
+var sleep 		= require('sleep');
 
 var config 				= require('./config/config')
 var peopleController 	= require('./controllers/people');
@@ -19,6 +20,9 @@ var oauth2Controller 	= require('./controllers/oauth2');
 // Terms controller
 var termsController 	= require('./controllers/terms');
 var solrSearchController = require('./controllers/solr');
+
+// To be used by the session
+var sess;
 
 
 // Connect to the Mongodb
@@ -51,10 +55,15 @@ app.use(bodyParser.urlencoded());	// urlencoded parser
 
 // Use express session support since OAuth2orise requires it
 app.use(session({
-	secret: 'Super Secrete Session Key',
-	saveUninitialized: true,
-	resave: true
+	secret: 'GRRRRRFICASSTHMA',  // Super Secrete Session Key
+	saveUninitialized : true,
+	resave: true,
+	
+	/*cookie: {
+		maxAge: 30000
+	} */
 }))
+
 
 app.use(flash()); 	// use connect-flash for flash messages stored in session
 
@@ -65,38 +74,87 @@ app.use(passport.initialize());
 app.use(function(req, res, next) {
     
     console.log('middleware validation');
-    
-   
-/*    var incomingToken = req.headers.token;
-
-    incomingToken = incomingToken + '0';
-    console.log(req.headers);
-
-    if (incomingToken === "undefined0") {
-    	
-    	
-    	res.json({
-    		status: "401",
-    		message: "Unauthorized Request: Invalid access token or access token not found. Please login again and try"
-    	});
-		
-
-    	//res.render('401', {info: 'Unauthorized access', err:null});
-    } else {
-    	next();
-    }*/
-
-   
-   
+      
    next();
 });
 
 
+
+
+
 // Initial route to /api
 // http://localhost:3000/api
+// 
+// 
 router.get('/', function(req, res){
 	res.json({message: 'You are motivating People!'});
+
 });
+
+router.get('/sessionmgmt', function(req, res){
+
+	sess = req.session;
+	console.log(sess);
+
+	/*
+	* Here we have assign the 'session' to 'sess'.
+	* Now we can create any number of session variable we want.
+	* Here we do like this.
+	*/
+	// sess.email;
+	// sess.username;
+	// sess.token;
+
+
+	if (sess.email) {
+		/*
+		* This line checks session existence.
+		* If it exists then will do some action
+		*/
+	
+		// res.json({message: 'You are motivating People!'});
+		res.redirect('/api/adminsess');
+	} else {
+		res.render("indexsess");
+	}
+	
+});
+
+
+router.post('/loginsess', function(req, res){
+	sess=req.session;
+	//In this we are assigning email to sess.email variable.
+	//email comes from HTML page.
+	sess.email=req.body.email;
+	console.log(sess);
+	// res.json({email : sess.email});
+	res.end('done');
+});
+
+router.get('/adminsess',function(req,res){
+	sess=req.session;
+	if(sess.email) {
+
+		res.write('<h1>Hello '+sess.email+'</h1>');
+		res.end('<a href="/api/logoutsess">Logout</a>');
+	} else 	{
+		res.write('<h1>Please login first.</h1>');
+		res.end('<a href="/api/sessionmgmt">Login</a>');
+	}
+});
+
+router.get('/logoutsess',function(req,res){
+
+	req.session.destroy(function(err){
+		if(err) {
+		 console.log(err);
+		}
+		else {
+			res.redirect('/api/sessionmgmt');
+		}
+	});
+});
+
 
 
 

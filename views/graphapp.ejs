@@ -220,10 +220,22 @@
 
         console.log("it is in typeahead");
         var termsData = [];
+        // app/data/typeahead_term.json
+        
+        $.getJSON('/api/terms', function(terms){
+          console.log(terms.data[0]);
 
-        $.getJSON('app/data/typeahead_term.json', function(terms){
-          //console.log(terms);
-          $("#termtypeahead").typeahead({source:terms});
+          for (var i=0; i <= terms.data.length; i++) {
+            // console.log(terms[i].term);
+            // 
+            if (terms.data[i]) {
+              termsData.push(terms.data[i]);
+            }
+          }
+
+          console.log(termsData);
+          
+          $("#termtypeahead").typeahead({source:termsData});
         });
         
         /*

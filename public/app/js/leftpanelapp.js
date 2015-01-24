@@ -1,103 +1,117 @@
-			var orgid;
-			var parid;
-			var OTable = $('#example').dataTable({
-			// "dom" : '<"top"f>Zrt<"bottom"p><"clear">',
-		//	"scrollY" : "200px",
-			"sDom": '<"top"f>ti<"bottom"p><"clear">',
-			"scrollCollapse" : true,
-			// "bServerSide":true,
-			 "bFilter": true,
-			"colResize" : {
-				"tableWidthFixed" : false,
-			},
-          	"bProcessing": true,
-          	// "sAjaxSource": "app/data/_search_databootstrap.json",
-          	// "sAjaxSource": "/api/getstandardterms",
+var orgid;
+var parid;
+var OTable = $('#example').dataTable({
+	// "dom" : '<"top"f>Zrt<"bottom"p><"clear">',
+	// "sDom": '<"top"f>ti<"bottom"p><"clear">',
+	//"sDom": '<"top"f>t',
+	// "scrollCollapse" : true,
 
-          	"sAjaxSource": "app/data/_search_databootstrap.json",
-	                                      
-	                                   
-			//"ajax" : "app/data/_search_databootstrap.json",
-			//
-			"fnServerParams": function( aoData ){
+	"bServerSide":true,
+	"bProcessing": true,
+	"scrollY" : "500px",
+	"sDom": '<"top"f>rtiS',
+	"scrollCollapse": true,
+	"paging": false,
+	 "bFilter": true,
+	"colResize" : {
+		"tableWidthFixed" : false,
+	},
+          	
+  	// "sAjaxSource": "app/data/_search_databootstrap.json",
+  	"sAjaxSource": "/api/getstandardterms",
+  	//"ajax" : "app/data/_search_databootstrap.json",
+	"fnServerParams": function( aoData ){
 
+		var isAllChecked = document.getElementById('All').checked;
 
-				var isICD10Checked = document.getElementById('icd10').checked;
-				var isSNOMEDChecked = document.getElementById('snomed').checked;
-				var isLOINCChecked = document.getElementById('loinc').checked;
-				var isRXNORMChecked = document.getElementById('rxnorm').checked;
-				var isMESHChecked = document.getElementById('mesh').checked;
-				// send the database checked information to the server
-				// the search will occur on the selected database only
-				aoData.push({"name":"icd", "value": isICD10Checked});
-				aoData.push({"name":"snomed", "value": isSNOMEDChecked});
-				aoData.push({"name":"loinc", "value": isLOINCChecked});
-				aoData.push({"name":"rxnorm", "value": isRXNORMChecked});
-				aoData.push({"name":"mesh", "value": isMESHChecked});
-				aoData.push({"name":"token", "value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIxQHVzZXIxLmNvbSJ9._lngGXtNFQlDaF56miP1gReD5P4COniPy5c5A1ibZkY"});
-				}, 
+		if (isAllChecked = "true") {
+			isICD10Checked = true;
+			isSNOMEDChecked = true;
+			isLOINCChecked = true;
+			isRXNORMChecked = true;
+			isMESHChecked = true;
+		} else {
 
-			"fnCreatedRow" : function(nRow, aData, iDataIndex) {
+			var isICD10Checked = document.getElementById('icd10').checked;
+			var isSNOMEDChecked = document.getElementById('snomed').checked;
+			var isLOINCChecked = document.getElementById('loinc').checked;
+			var isRXNORMChecked = document.getElementById('rxnorm').checked;
+			var isMESHChecked = document.getElementById('mesh').checked;
+		}
 
-				// }
-			$('#example tbody td ').attr("id", OTable.fnGetData().length);
-			},
-				"rowCallback" : function(row, data) {
+		// send the database checked information to the server
+		// the search will occur on the selected database only
+		aoData.push({"name":"icd", "value": isICD10Checked});
+		aoData.push({"name":"snomed", "value": isSNOMEDChecked});
+		aoData.push({"name":"loinc", "value": isLOINCChecked});
+		aoData.push({"name":"rxnorm", "value": isRXNORMChecked});
+		aoData.push({"name":"mesh", "value": isMESHChecked});
+	}, 
 
-			},
-					"columns" : [{
-					"aTargets" : [0],
-					"mData" : "id",
-					"mRender" : function(data, type, val) {
+	"fnCreatedRow" : function(nRow, aData, iDataIndex) {
 
-						console.log(data);
-						var z = val.id;
-						console.log(z);
+		$('#example tbody td ').attr("id", OTable.fnGetData().length);
+	},
+	"rowCallback" : function(row, data) {
 
-					if (!val.id) {
-						val.id = "0";
+	},
+	"columns" : [{
+			"aTargets" : [0],
+			"mData" : "id",
+			"mRender" : function(data, type, val) {
+
+				// console.log(data);
+				var z = val.id;
+				// console.log(z);
+
+				if (!val.id) {
+					val.id = "0";
+				}
+				if (z.length > 6) {
+					orgid = val.id;
+					z = z.substr(0, 6) + "...";
+
+					return z;
+				}
+				if (z.length <= 6) {
+					//  return (type === "display" || type === "filter") ? z + "%" : "None";  //add % sign to value
+				//	z = z.substr(0, 6) + "...";
+					return z;
+				}
+
+			}	
+		}, 
+		{
+			"aTargets" : [1],
+			"mData" : "term",
+			"mRender" : function(data, type, val) {
+				var y = val.term;
+				// console.log(y);
+
+				if (!val.term) {
+						val.term = " ";
 					}
-					if (z.length > 6) {
-						orgid = val.id;
-						z = z.substr(0, 6) + "...";
+				if ( y.length < 30 ) {
+					orgterm = val.term;
+					//y = y.substr(0, 30) + "...";
 
-						return z;
-					}
-					if (z.length <= 6) {
-						//  return (type === "display" || type === "filter") ? z + "%" : "None";  //add % sign to value
-					//	z = z.substr(0, 6) + "...";
-						return z;
-					}
+					return y;
+				}
+				if (y.length >= 30) {
+					//  return (type === "display" || type === "filter") ? z + "%" : "None";  //add % sign to value
+					y = y.substr(0, 30) + "...";
+					return y;
+				}
 
-					}
-					}, {
-					"aTargets" : [1],
-					"mData" : "term",
-					"mRender" : function(data, type, val) {
-						var y = val.term;
-						console.log(y);
+			}
+		}, 
+		{
+				"data" : "db",
+				"width" : "20%"
+		}]
+});
 
-					if (!val.term) {
-							val.term = " ";
-						}
-					if ( y.length < 30 ) {
-						orgterm = val.term;
-						//y = y.substr(0, 30) + "...";
-
-						return y;
-					}
-					if (y.length >= 30) {
-						//  return (type === "display" || type === "filter") ? z + "%" : "None";  //add % sign to value
-						y = y.substr(0, 30) + "...";
-						return y;
-					}
-
-					}
-					}, {
-						"data" : "db",
-						"width" : "20%"
-					}]
-					});/**.columnFilter({
+/**.columnFilter({
 			            aoColumns: [ 
 			                     { type: "text" },
 			                     { type: "text" },
@@ -124,205 +138,202 @@
 				/**************************************************************************/
 				//OTable.dataTables_filter input{width:400px};
 
-		$('.dataTables_filter input').attr("placeholder", "Search for standard terms"); //placeholder for search in datatables
-		$('.dataTables_filter input').keydown(function(e){
+$('.dataTables_filter input').attr("placeholder", "Search for standard terms"); //placeholder for search in datatables
+$('.dataTables_filter input').keydown(function(e){
 
-				e.stopPropagation();
-			
-		});
+	e.stopPropagation();
 
-			$(document).on("contextmenu", "#example tbody ", function(e) {
-					return false;
-		});
-			$(document).on("contextmenu", "#example tbody td ", function(e) {
+});
 
-			var copieddata;
+$(document).on("contextmenu", "#example tbody ", function(e) {
+	return false;
+});
 
-		//var clip = new ZeroClipboard();
+$(document).on("contextmenu", "#example tbody td ", function(e) {
 
-			$.contextMenu({
-			selector : '#example tbody td',
-			callback : function(key, options) {
+	var copieddata;
+
+	$.contextMenu({
+		selector : '#example tbody td',
+		callback : function(key, options) {
 			var m = "clicked: " + key;
 			//  var clip = new ZeroClipboard.Client(key);
 			if (key == "Copy") {
 				//   var clip = new ZeroClipboard.Client();
-			console.log("I am here, " + this);
-			$(this).attr("id", parid);
-					console.log("Parent Id: " + parid);
-					console.log(this[0].parentNode.id);
-					var actualcopying = this[0].parentNode.id;
-					console.log(OTable.fnGetData()[actualcopying - 1]);
+				// console.log("I am here, " + this);
+				$(this).attr("id", parid);
+				// console.log("Parent Id: " + parid);
+				// console.log(this[0].parentNode.id);
+				var actualcopying = this[0].parentNode.id;
+				// console.log(OTable.fnGetData()[actualcopying - 1]);
 
-					console.log(this[0].innerHTML.length);
-					console.log(this[0].innerHTML);
-			if (this[0].innerHTML.length > 8) {
+				// console.log(this[0].innerHTML.length);
+				// console.log(this[0].innerHTML);
+				if (this[0].innerHTML.length > 8) {
 					newterm_data = OTable.fnGetData()[actualcopying - 1].term;
-					console.log(newterm_data);
+					// console.log(newterm_data);
 					$('#term_input').val(newterm_data);
 				}
-			console.log(OTable.fnGetData()[actualcopying - 1]);
-			console.log(this[0].innerHTML);
-			if (this[0].innerHTML.length <= 6) {
-					console.log("abcdefg");
-			if (OTable.fnGetData()[actualcopying - 1].db == 'ICD10') {
-					console.log(OTable.fnGetData()[actualcopying - 1].id);
-				$('#icd_input').val(OTable.fnGetData()[actualcopying - 1].id);
-			}
-			if (OTable.fnGetData()[actualcopying - 1].db == 'SNOMED') {
-				$('#snomed_input').val(OTable.fnGetData()[actualcopying - 1].id);
-			}
-			if (OTable.fnGetData()[actualcopying - 1].db == 'RxNorm') {
-				$('#rxnorm_input').val(OTable.fnGetData()[actualcopying - 1].id);
-			}
-			if (OTable.fnGetData()[actualcopying - 1].db == 'mesh') {
+				// console.log(OTable.fnGetData()[actualcopying - 1]);
+				// console.log(this[0].innerHTML);
+				if (this[0].innerHTML.length <= 6) {
+						// console.log("abcdefg");
+					if (OTable.fnGetData()[actualcopying - 1].db == 'ICD10') {
+							console.log(OTable.fnGetData()[actualcopying - 1].id);
+						$('#icd_input').val(OTable.fnGetData()[actualcopying - 1].id);
+					}
+					if (OTable.fnGetData()[actualcopying - 1].db == 'SNOMED') {
+						$('#snomed_input').val(OTable.fnGetData()[actualcopying - 1].id);
+					}
+					if (OTable.fnGetData()[actualcopying - 1].db == 'RxNorm') {
+						$('#rxnorm_input').val(OTable.fnGetData()[actualcopying - 1].id);
+					}
+					if (OTable.fnGetData()[actualcopying - 1].db == 'MeSH') {
 
-				$('#mesh_input').val(OTable.fnGetData()[actualcopying - 1].id);
-			}
-			if (OTable.fnGetData()[actualcopying - 1].db == 'LOINC') {
+						$('#mesh_input').val(OTable.fnGetData()[actualcopying - 1].id);
+					}
+					if (OTable.fnGetData()[actualcopying - 1].db == 'LOINC') {
 
-				$('#loinc_input').val(OTable.fnGetData()[actualcopying - 1].id);
-			}
+						$('#loinc_input').val(OTable.fnGetData()[actualcopying - 1].id);
+					}
 
-			}
-			}/* end of Copy */
+				}
+			} /* end of Copy if condition */
 
 			if (key == "paste") {
-			if (newcut == 1) {
-				//dialog.dialog( "open" );
-				console.log("pasting");
-				// showingnode();
-			} else {
-			console.log(this);
+				if (newcut == 1) {
+					//dialog.dialog( "open" );
+					console.log("pasting");
+					// showingnode();
+				} else {
+				// console.log(this);
 						}
 			} /* end of Paste */
+		},
+		items : {
+			"Copy" : {
+				name : "Copy",
+				icon : "Copy"
 			},
-				items : {
-					"Copy" : {
-					name : "Copy",
-					icon : "Copy"
-				},
-				"CreateNode" : {
-					name : "Paste",
-					icon : "Paste"
-				},
-				}
-			});
-			/* End of Context Menu */
-
-
-		});
-			initializeTypeAhead();
-			console.log($('#new_saving_token').text());
-			$('#newbtn-slidepanel').bind('click', function() {
-			console.log("slidebutton");
-			$("#slider").show();
-			actualcounter = actualcounter + 1;
-			newverifycounter = actualcounter % 2;
-	        $('#extruderLeft div.flap').css('background','url("app/images/doubleleftarrowimage.png") no-repeat');
-			if (newverifycounter == 1 || actualcounter == 1) {
-			$('#leftacrosspanel').show();
-
-			$("#slider").slideReveal("show");
-			$("#extruderLeft div.flap").css('left', '200%');
-		//	$('#newbtn-slidepanel').html("Close the Term Entry Panel");
-			$('#newbtn-slidepanel').css('background','url("app/images/images-minus.png") no-repeat');
-		//	$('#newbtn-slidepanel').css('background-position','-16px -128px');
-			//$('#newbtn-slidepanel').css('font-family','Glyphicons Halflings');
-			//$('#newbtn-slidepanel').css('content','\e082');
-			$('#newbtn-slidepanel').css('background-size','100%');
-			$("#adding-more").css('z-index', '2147483647');
-			$("#adding-more").css('left', '998');
-			// $.fn.openMbExtruder();
+			"CreateNode" : {
+				name : "Paste",
+				icon : "Paste"
+			},
 		}
+	}); /* End of Context Menu */
+	
+});  /* End of line 152 */
+
+initializeTypeAhead();
+console.log($('#new_saving_token').text());
+$('#newbtn-slidepanel').bind('click', function() {
+	console.log("slidebutton");
+	$("#slider").show();
+	actualcounter = actualcounter + 1;
+	newverifycounter = actualcounter % 2;
+	$('#extruderLeft div.flap').css('background','url("app/images/doubleleftarrowimage.png") no-repeat');
+	if (newverifycounter == 1 || actualcounter == 1) {
+		$('#leftacrosspanel').show();
+
+		$("#slider").slideReveal("show");
+		$("#extruderLeft div.flap").css('left', '200%');
+	//	$('#newbtn-slidepanel').html("Close the Term Entry Panel");
+		$('#newbtn-slidepanel').css('background','url("app/images/images-minus.png") no-repeat');
+	//	$('#newbtn-slidepanel').css('background-position','-16px -128px');
+		//$('#newbtn-slidepanel').css('font-family','Glyphicons Halflings');
+		//$('#newbtn-slidepanel').css('content','\e082');
+		$('#newbtn-slidepanel').css('background-size','100%');
+		$("#adding-more").css('z-index', '2147483647');
+		$("#adding-more").css('left', '998');
+	// $.fn.openMbExtruder();
+	}
 
 	if (newverifycounter == 0 || actualcounter == 2) {
 
-			//	$('#newbtn-slidepanel').html("Open the Term Entry Panel");
-			 $('#newbtn-slidepanel').css('background','url("app/images/plus-1.png") no-repeat');
-	               
-		  	 $('#extruderLeft div.flap').css('background','url("app/images/leftarrowimages.jpg") no-repeat');
-        	 $('#extruderLeft div.flap').css('background-size','60%');
-       //  $('#newbtn-slidepanel').css('font-family','Glyphicons Halflings');
-		 //$('#newbtn-slidepanel').css('content','\e081');
-      //   $('#extruderLeft div.flap').css('color','white');
-			$('#newbtn-slidepanel').css('background-size','100%');
-			$("#slider").slideReveal("hide");
-			$("#extruderLeft div.flap").css('left', '100%');
-			$("#adding-more").css('z-index', '2147483647');
-			$("#adding-more").css('left', '498');
+		//	$('#newbtn-slidepanel').html("Open the Term Entry Panel");
+		 $('#newbtn-slidepanel').css('background','url("app/images/plus-1.png") no-repeat');
+               
+	  	 $('#extruderLeft div.flap').css('background','url("app/images/leftarrowimages.jpg") no-repeat');
+    	 $('#extruderLeft div.flap').css('background-size','60%');
+   //  $('#newbtn-slidepanel').css('font-family','Glyphicons Halflings');
+	 //$('#newbtn-slidepanel').css('content','\e081');
+  //   $('#extruderLeft div.flap').css('color','white');
+		$('#newbtn-slidepanel').css('background-size','100%');
+		$("#slider").slideReveal("hide");
+		$("#extruderLeft div.flap").css('left', '100%');
+		$("#adding-more").css('z-index', '2147483647');
+		$("#adding-more").css('left', '498');
 
-		}
-		});
-				//  function newchange(){
-	if ($("#All").is(':checked')) {
-				$('input#icd10').attr("checked");
-				console.log("checked");
-	} else {
-				console.log("unchecked");
-				$('#icd10  #snomed  #loinc #rxnorm #mesh').attr('unchecked');
-			}
+	}
+});
+
+//  function newchange(){
+if ($("#All").is(':checked')) {
+	$('input#icd10').attr("checked");
+	console.log("checked");
+} else {
+	console.log("unchecked");
+	$('#icd10  #snomed  #loinc #rxnorm #mesh').attr('unchecked');
+}
 
 				///
-	$("#extruderLeft div.flap").click(function() {
-			console.log("flap");
-			$("#newbtn-slidepanel").show();
-			$("#adding-more").show();
+$("#extruderLeft div.flap").click(function() {
+	console.log("flap");
+	$("#newbtn-slidepanel").show();
+	$("#adding-more").show();
 
-			//     $("#adding-more").css("position","absolute");
-			$("#adding-more").css('z-index', '2147483647');
-			$("#adding-more").css('left', '498');
-	        $('#extruderLeft div.flap').css('background','url("app/images/leftarrowimages.jpg") no-repeat');
-	        $('#extruderLeft div.flap').css('background-size','60%');
-	        $('#newbtn-slidepanel').css('background','url("app/images/plus-1.png") no-repeat');
+	//     $("#adding-more").css("position","absolute");
+	$("#adding-more").css('z-index', '2147483647');
+	$("#adding-more").css('left', '498');
+    $('#extruderLeft div.flap').css('background','url("app/images/leftarrowimages.jpg") no-repeat');
+    $('#extruderLeft div.flap').css('background-size','60%');
+    $('#newbtn-slidepanel').css('background','url("app/images/plus-1.png") no-repeat');
 
-	         //$('#newbtn-slidepanel').css('class','glyphicon glyphicon-plus');
-	        //$('#newbtn-slidepanel').css('font-family','Glyphicons Halflings');
-			//$('#newbtn-slidepanel').css('background','\e081');
-	        $('#newbtn-slidepanel').css('background-size','100%');
-	        $("#slider").show();
-			prevcounter = prevcounter + 1;
-			prevverifycounter = prevcounter % 2;
-			console.log(prevcounter);
-			console.log(prevverifycounter);
-	    if (newverifycounter == 1 || actualcounter == 1) {
-			$("#extruderLeft  div.flap").css('left', '100%');
-	           //  $("#slider").show();
-			          // $("#slider").slideReveal("show");
-			             
+     //$('#newbtn-slidepanel').css('class','glyphicon glyphicon-plus');
+    //$('#newbtn-slidepanel').css('font-family','Glyphicons Halflings');
+	//$('#newbtn-slidepanel').css('background','\e081');
+    $('#newbtn-slidepanel').css('background-size','100%');
+    $("#slider").show();
+	prevcounter = prevcounter + 1;
+	prevverifycounter = prevcounter % 2;
+	console.log(prevcounter);
+	console.log(prevverifycounter);
+	if (newverifycounter == 1 || actualcounter == 1) {
+		$("#extruderLeft  div.flap").css('left', '100%');
+	       //  $("#slider").show();
+		          // $("#slider").slideReveal("show");
+	}
+	if (prevverifycounter == 0 || prevcounter == 2) {
+		// $('#leftacrosspanel').show();
+		//  $("#slider").show();
+		//   $("#slider").slideReveal("show");
+		//   $("div.flap").css('left','200%');
+		$('#extruderLeft div.flap').css('background','url("app/images/rightarrowimages.jpg") no-repeat');
+		$('#extruderLeft div.flap').css('background-size','60%');
+		$("#adding-more").hide();
+		//$('#newbtn-slidepanel').html("Open the Term Entry Panel");
+		$("#adding-more").css('z-index', '100');
+		$("#adding-more").css('left', '-15');
+	}
+});
+	
+var alarmID = 0;
 
-					}
-		if (prevverifycounter == 0 || prevcounter == 2) {
-			// $('#leftacrosspanel').show();
-			//  $("#slider").show();
-			//   $("#slider").slideReveal("show");
-			//   $("div.flap").css('left','200%');
-			$('#extruderLeft div.flap').css('background','url("app/images/rightarrowimages.jpg") no-repeat');
-			$('#extruderLeft div.flap').css('background-size','60%');
-			$("#adding-more").hide();
-			//$('#newbtn-slidepanel').html("Open the Term Entry Panel");
-			$("#adding-more").css('z-index', '100');
-			$("#adding-more").css('left', '-15');
-			}
-			});
-			var alarmID = 0;
+$('#example tbody').on('click', 'td', function() {
 
-			$('#example tbody').on('click', 'td', function() {
+	parid = this.parentNode.id;
 
-			parid = this.parentNode.id;
+	for ( i = 0; i < OTable.fnGetData().length; i++) {
 
-			for ( i = 0; i < OTable.fnGetData().length; i++) {
+	}
+});
 
-			}
+		//     }
 
-			});
+$('input').keydown(function(e){
+			 e.stopPropagation();
 
-				//     }
-
-		$('input').keydown(function(e){
-					 e.stopPropagation();
-
-		});
+});
 
 				 // Functionality when submit button pressed
         $('#termsSubmitBtn').click(function(){
@@ -338,7 +349,7 @@
            console.log(termInput);
           $.ajax({
               type: 'POST',
-              url: 'datatermstosave',
+              url: '/api/terms',
               data:jsonString,
               contentType: "application/json; charset=utf-8",
               dataType: 'json',
@@ -359,7 +370,7 @@
                       // Call refresh button to reset fields after successful insert
                       $("#termsRefreshBtn").trigger("click");
                       $("#final_saving_term")[0].reset();
-                      console.log($("#final_saving_term")[0].reset);
+                      // console.log($("#final_saving_term")[0].reset);
                       $("#termentry")[0].reset();
                   }
               });
@@ -472,18 +483,18 @@
 		          // Get the final string to save
 		           var jsonString = $("#final_saving_term_edit").text();
 		           console.log(jsonString);
-		           alert(jsonString);
+		           // alert(jsonString);
 		           var termInput = $('#term_input_edit').val();
 		           console.log(termInput);
 
 		      	$.ajax({
 		              type: 'POST',
-		              url: 'datatermstoedit',
+		              url: '/api/terms',
 		              data:jsonString,
 		              contentType: "application/json; charset=utf-8",
 		              dataType: 'json',
 		              async: true,
-		              beforeSend: function(xhr){xhr.setRequestHeader('token', newtoken)},
+		              // beforeSend: function(xhr){xhr.setRequestHeader('token', newtoken)},
 		              success: function(data){
 		                $.each(data, function(index, value) {
 		                  //alert(index);
@@ -516,35 +527,34 @@
 		          var newtoken = $.cookie('Token');
 		          // Get the final string to save
 		          var jsonString = $("#final_saving_term_edit").text();
-		          alert(jsonString);
-		        if (Boolean(jsonString)) {
-		            // send ajax post to delete the term
+		          // alert(jsonString);
+			        if (Boolean(jsonString)) {
+			            // send ajax post to delete the term
+			            
+			            $.ajax({
+			              type: 'POST',
+			              url: 'datatermstodelete',
+			              data:jsonString,
+			              contentType: "application/json; charset=utf-8",
+			              dataType: 'json',
+			              async: true,
+			              beforeSend: function(xhr){xhr.setRequestHeader('token', newtoken)},
+			              success: function(data){
+			                $.each(data, function(index, value) {
+			                  //alert(index);
 
-		            
-		            $.ajax({
-		              type: 'POST',
-		              url: 'datatermstodelete',
-		              data:jsonString,
-		              contentType: "application/json; charset=utf-8",
-		              dataType: 'json',
-		              async: true,
-		              beforeSend: function(xhr){xhr.setRequestHeader('token', newtoken)},
-		              success: function(data){
-		                $.each(data, function(index, value) {
-		                  //alert(index);
+			                  // This indicates the success status
+			                  // The record successfully saved
+			                  // Processing the json {"status": "true"}
 
-		                  // This indicates the success status
-		                  // The record successfully saved
-		                  // Processing the json {"status": "true"}
+			        if (data[index] == true) {
+			                      // alert(data[index]);
+			                      $("#termentersuccessalert").fadeOut("slow");
+			                      $("#termdeletesuccessalert").fadeIn("slow");
 
-		        if (data[index] == true) {
-		                      // alert(data[index]);
-		                      $("#termentersuccessalert").fadeOut("slow");
-		                      $("#termdeletesuccessalert").fadeIn("slow");
-
-		                      // Call refresh button to reset fields after successful insert
-		                      $("#termsRefreshBtn_edit").trigger("click");
-		                      
+			                      // Call refresh button to reset fields after successful insert
+			                      $("#termsRefreshBtn_edit").trigger("click");
+			                      
 
 
 		                  }
@@ -565,7 +575,7 @@
 		          console.log('it is in delete');
 		          // Get the final string to save
 		          var jsonString = $("#final_saving_term").text();
-		          alert(jsonString);
+		          // alert(jsonString);
 		     if (Boolean(jsonString)) {
 		            // send ajax post to delete the term
 
@@ -592,6 +602,7 @@
 
 		                      // Call refresh button to reset fields after successful insert
 		                      $("#termsRefreshBtn").trigger("click");
+
                       
                   }
                 });

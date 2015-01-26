@@ -93,7 +93,7 @@ exports.postTerm = function(req, res){
 				if (err)
 					res.send(err);
 
-				res.json({message: 'New term added successfully', data: term});
+				res.json({message: 'New term added successfully', data: term, status : "true"});
 			});
 
 		} else {

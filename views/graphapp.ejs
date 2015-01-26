@@ -218,22 +218,20 @@
         [{"term": "asthma"}, {"term": "cholera"}, {"term": "Typhoid"}, {"term": "Cough"}, {"term": "Wheezing"}, {"term": "coughing"}, {"term": "Wheez"}, {"term": "Test"}, {"term": "test10"}]
         */
 
-        console.log("it is in typeahead");
+        // console.log("it is in typeahead");
         var termsData = [];
         // app/data/typeahead_term.json
         
         $.getJSON('/api/terms', function(terms){
-          console.log(terms.data[0]);
+          // console.log(terms.data[0]);
 
           for (var i=0; i <= terms.data.length; i++) {
-            // console.log(terms[i].term);
-            // 
             if (terms.data[i]) {
               termsData.push(terms.data[i]);
             }
           }
 
-          console.log(termsData);
+          // console.log(termsData);
           
           $("#termtypeahead").typeahead({source:termsData});
         });

@@ -336,7 +336,7 @@ $('input').keydown(function(e){
 });
 
 				 // Functionality when submit button pressed
-        $('#termsSubmitBtn').click(function(){
+$('#termsSubmitBtn').click(function(){
 
         	//generateJSONTerms();
 	       var newtoken = $.cookie('Token');
@@ -344,9 +344,9 @@ $('input').keydown(function(e){
 	          // Get the final string to save
 	       var jsonString = $("#final_saving_term").text();
                    console.log(jsonString);
-           alert(jsonString);
+           // alert(jsonString);
            var termInput = $('#term_input').val();
-           console.log(termInput);
+           // console.log(termInput);
           $.ajax({
               type: 'POST',
               url: '/api/terms',
@@ -354,37 +354,34 @@ $('input').keydown(function(e){
               contentType: "application/json; charset=utf-8",
               dataType: 'json',
               async: true,
-              beforeSend: function(xhr){xhr.setRequestHeader('token', newtoken)},
+              // beforeSend: function(xhr){xhr.setRequestHeader('token', newtoken)},
               success: function(data){
+              	console.log(data.term);
                 $.each(data, function(index, value) {
                   //alert(index);
 
                   // This indicates the success status
                   // The record successfully saved
                   // Processing the json {"status": "true"}
+                  // 
+                  // console.log(data[index].term);
 
-                  if (data[index] == true) {
+                  if (data[index] == "true") {
+
                       // alert(data[index]);
+                      console.log(data[index].term);
                       $("#termentersuccessalert").fadeIn("slow");
+                      
 
-                      // Call refresh button to reset fields after successful insert
-                      $("#termsRefreshBtn").trigger("click");
-                      $("#final_saving_term")[0].reset();
-                      // console.log($("#final_saving_term")[0].reset);
-                      $("#termentry")[0].reset();
                   }
               });
             }
           });
-          //console.log(datatermstosave);
-         /** $("#final_saving_term").each(function(){
-          	$(this)[0].reset();
-          });**/
-			//$("#termentry")[0].reset();
+          document.getElementById("#final_saving_term").value = '';
           $("#newdatatermstosave")[0].reset();
       });
 
-	function generateJSONTermsforedit(){
+function generateJSONTermsforedit(){
        
 		        var term_input = document.getElementById('term_input_edit').value;
 		        var loinc_input_edit = document.getElementById('loinc_input_edit').value;
@@ -451,7 +448,7 @@ $('input').keydown(function(e){
 		        }
 
 
-		function OnTermInputedit(event) {
+function OnTermInputedit(event) {
 		        var searchstring = event.target.value.trim();
 		        var searchstringlength = searchstring.length;
 		        var term_input_data = document.getElementById('term_input_edit').value;
@@ -474,8 +471,9 @@ $('input').keydown(function(e){
 		        searchstring = "";
 		      }
 
-      // Functionality when update button pressed
-		        $('#termsUpdateBtn_edit').click(function(){
+
+// Functionality when update button pressed
+$('#termsUpdateBtn_edit').click(function(){
 
 		        	//generateJSONTerms();
 			       var newtoken = $.cookie('Token');

@@ -25,7 +25,7 @@ exports.getTerms = function(req, res){
 
 		if (isTokenValid == true) {
 
-			Terms.find({}, {"term": 1, _id:0}, function(err, terms) {
+			Terms.find({active: true}, {"term": 1, _id:0}, function(err, terms) {
 				// console.log('found data');
 				// console.log(terms);
 				
@@ -51,7 +51,7 @@ exports.getTerms = function(req, res){
 // Create end points for /api/terms/:term_name for GET
 exports.getTermDetails = function(req, res){
 
-	var term_name = req.query.term_name;
+	var term_name = req.query.term;
 	console.log(term_name);
 
 
@@ -167,8 +167,6 @@ exports.deleteTerm = function(req, res){
 	term.concepts = req.body.concepts;
 	term.synonyms = req.body.synonyms;
 	term.active = true;
-
-
 
 	Terms.findOneAndUpdate( 
 		{term: term.term},   // find this term

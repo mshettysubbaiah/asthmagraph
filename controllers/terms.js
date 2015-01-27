@@ -86,6 +86,7 @@ exports.postTerm = function(req, res){
 			term.concepts = req.body.concepts;
 			term.term = req.body.term;
 			term.synonyms = req.body.synonyms;
+			term.active = true;
 
 			console.log(term);
 	

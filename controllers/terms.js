@@ -156,8 +156,43 @@ exports.putTerm = function(req, res){
 // Create endpoint for /api/terms/:term_id for DELETE
 exports.deleteTerm = function(req, res){
 
-	console.log(req.params.term_id);
-	console.log(req.user._id);
+	// console.log(req.params.term_id);
+	// console.log(req.user._id);
+
+	console.log(req.body.term);
+
+	var term = new Terms();
+
+	term.term = req.body.term;
+	term.concepts = req.body.concepts;
+	term.synonyms = req.body.synonyms;
+	term.active = true;
+
+
+
+	Terms.findOneAndUpdate( 
+		{term: term.term},   // find this term
+		{$set: {active: false}},
+		{
+			sort: {date: -1},
+			upsert: false	// set to false so the data is not created
+		},
+		function(err, data) {
+
+			// console.log(data);
+
+			if (err) {
+
+				res.json({errcode: 1, message: 'The term does not exists. Please use the Term Enter form to enter new data'});
+
+			} else {
+				
+				res.json({errcode: 0, message: 'Old term updated successfully. Please use the Term Enter form to enter new data', data: data});
+
+			}
+		});
+
+/*
 
 	// Use the Person model to find a specific term and remove it
 	Terms.remove({addbyuserId: req.user._id, _id:req.params.term_id}, function(err){
@@ -165,6 +200,6 @@ exports.deleteTerm = function(req, res){
 			res.send(err);
 
 		res.json({message: 'Person removed successfully'});
-	});
+	});*/
 
 };

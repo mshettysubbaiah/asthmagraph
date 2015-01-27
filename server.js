@@ -231,7 +231,8 @@ mongoose.connect(config.mongo_url);
 router.route('/terms')
 	.get(termsController.getTerms)
 	.post(termsController.postTerm)
-	.put(termsController.putTerm);
+	.put(termsController.putTerm)
+	.delete(termsController.deleteTerm);
 
 // Create endpoint handlers for /terms
 router.route('/gettermdetails')

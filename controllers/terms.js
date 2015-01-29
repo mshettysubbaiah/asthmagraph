@@ -22,26 +22,36 @@ exports.getTerms = function(req, res){
 	tokenvalidator.asyncSeries(req, res, function(err, isTokenValid){
 
 		console.log("Token is valid: ", + isTokenValid);
+		var sortOrder = req.query.sortorder;
+		var sortBy;
+
+		if (sortOrder == 1) {
+			sortBy = { date : -1};   // Sort by latest entered data
+		} else if (sortOrder == 2) {
+			sortBy = { term : 1};	// Sort by alphabatical
+		}
 
 		if (isTokenValid == true) {
 
-			Terms.find({active: true}, {"term": 1, _id:0}, function(err, terms) {
-				// console.log('found data');
-				// console.log(terms);
-				
-				if (err)
-					res.send(err);
+			Terms.find({}, {"term": 1, _id:0})
+				.sort(sortBy)
+				.exec( function(err, terms) {
+					// console.log('found data');
+					// console.log(terms);
+					
+					if (err)
+						res.send(err);
 
-				var termsResults = [];
+					var termsResults = [];
 
-				for (var i=0; i < terms.length; i++) {
-					// console.log(terms[i].term);
-					termsResults.push(terms[i].term);
-				}
-				// console.log(termsResults);
+					for (var i=0; i < terms.length; i++) {
+						// console.log(terms[i].term);
+						termsResults.push(terms[i].term);
+					}
+					// console.log(termsResults);
 
-				res.json({data: termsResults});
-			});
+					res.json({data: termsResults});
+				});
 		} else {
 			res.json({errorcode: 1, message: 'Token invalid, please login', data: ""});
         }
@@ -63,8 +73,7 @@ exports.getTermDetails = function(req, res){
 	 		}
 
 	 		res.json({errcode: 0, message: "Found terms!", data: termDetails});
-	 });
-	
+	 	});
 };
 
 // Create end points for /api/terms/:term_id for POST

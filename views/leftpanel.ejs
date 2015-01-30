@@ -3,6 +3,7 @@
               <link href="js-lib/css/jquery.dataTables.css" rel="stylesheet">
 
               <link href="app/css/leftpanel.css" rel="stylesheet">
+              <link href="css/toggle-switch.css" rel="stylesheet">
               <br>
 
 
@@ -75,6 +76,7 @@
                 <ul class="nav nav-tabs" id="termstabpanel" role="tab">
                 <li class="active"><a  href="#termentry" role="tab" data-toggle="tab"><b>Term Entry</b></a></li>
                 <li class="termedit"><a  href="#termnewedit" role="tab" data-toggle="tab"><b>Term Edit</b></a></li>
+                <li class="listterms"><a  href="#listnewterms" role="tab" data-toggle="tab"><b>Term List</b></a></li>
                 </ul>
                 </div>
 
@@ -104,7 +106,7 @@
 
                 <div class="row" >
                   <div class="col-md-10">
-                    <input type="text" autocomplete="off" class="form-control required" id="term_input" oninput="" placeholder="Term is a required field" onkeydown="myFunction()" required>
+                    <input type="text" autocomplete="off" class="form-control required" id="term_input" placeholder="Term is a required field" onkeydown="myFunction()" oninput="OnTermInput(event)" required>
                     <!--span><font id='term_input_validate' color="red"><h6>Term is required .</h6></font></span-->
                   </div>
                 </div>
@@ -157,7 +159,7 @@
                   
               <!--  </div> -->
                   
-                <button type="button" class="btn btn-danger btn-sm" id="termsRefreshBtn" onclick = "this.form.reset()">
+                <button type="button" class="btn btn-danger btn-sm" id="cleartermsbtn" onclick = "this.form.reset()">
                   <span class="glyphicon glyphicon-remove"></span>&nbsp;&nbsp;&nbsp;Clear All
                 </button>
                
@@ -191,7 +193,7 @@
 
               <div class="row">
               <div class="col-md-12" >
-                <input type="text" autocomplete="off" class="form-control" id="termtypeahead" placeholder="Search Terms" onkeydown="myFunction()" data-provide = "typeahead">
+                <input type="text" autocomplete="off" class="form-control" id="termtypeahead" placeholder="Search Terms" onkeydown="myFunction()" data-provide = "typeahead" oninput="OnTypeaheadInputedit()">
               </div>                        
               </div>
                 <div class="row">
@@ -205,19 +207,7 @@
                     <input type="text" autocomplete="off" class="form-control required" id="term_input_edit" oninput="OnTermInputedit(event)" placeholder="Term is a required field" onkeydown="myFunction()" required>
                     <!--span><font id='term_input_validate' color="red"><h6>Term is required .</h6></font></span-->
                   </div>
-                </div>     
-
-                      <!--div class="row">
-                        <br>
-                        <div class="col-md-4"><h4>Enter Terms</h4></div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-10">
-                          <input type="text" autocomplete="off" class="form-control required" id="term_input" oninput="OnTermInput(event)" placeholder="Term is a required field" onkeydown="myFunction()" required>
-                          <!--span><font id='term_input_validate' color="red"><h6>Term is a required field.</h6></font></span-->
-                        <!--/div>
-                      </div-->
-
+                </div>    
 
                <div>
                 <br>                 
@@ -281,22 +271,56 @@
                       </button-->
               <br>
               <br>
-              <div class="alert alert-success" role="alert" id="termentersuccessalert" style="display:none">Well done! Data inserted successfully </div>
-              <div class="alert alert-success" role="alert" id="termdeletesuccessalert" style="display:none">Well done! Data deleted successfully </div>
+              <div class="alert alert-success" role="alert" id="termentersuccessalert_edit" style="display:none">Well done! Data inserted successfully </div>
+              <div class="alert alert-success" role="alert" id="termdeletesuccessalert_edit" style="display:none">Well done! Data deleted successfully </div>
             </form> <!-- End of Form  for term edit -->
           </div>
         </div> <!-- termedit -->
-        
-                
+
+        <div id = "listnewterms" class = "tab-pane fade" >
+            
+    
+    <div class="panel-round1 panel-body">
+          <div class="switch-toggle well">
+
+                      <input id="latest" name="view" type="radio" checked>
+                      <label for="latest" onclick="sortlatest()">Latest</label>
+
+                      <input id="alphabetical" name="view" type="radio">
+                      <label for="alphabetical" onclick="sortalpha()">Alphabetical</label>
+
+                      <a class="btn btn-primary"></a>
+              </div>
+           
+              <form id="listtermstoshow" action="" style="overflow-y:scroll;height:550px;border:0.5px solid black;">
+                  <div id= "listaccordion">
+                    <span id ="termheading" style="text-align:left;font-size:80%;" class = "listtermshead"> </span>
+                    <div id = "termentrydata">  
+                       <span id  = "listnewterm_head">Term:</span><span id  = "listnewterm_data"></span><br>
+                        <span id  = "listnewsynonms_head">Synonyms:</span><span id  = "listnewsynonyms_data"></span><br>
+                        <span id  = "listnewsynonms_codes"><b>Codes:</b></span><br>
+                        <span id  = "listnewsynonyms_loinc_head">loinc&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_loinc"></span><br>
+                        <span id  = "listnewsynonyms_icd10_head">icd10&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_icd10"></span><br>
+                        <span id  = "listnewsynonyms_snomed_head">snomed&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_snomed"></span><br>
+                        <span id  = "listnewsynonyms_rxnorm_head">rxnorm&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_rxnorm"></span><br> 
+                        <span id  = "listnewsynonyms_mesh_head">mesh&nbsp;&nbsp;</span> 
+                        <span id  = "listnewsynonyms_mesh"></span><br>
+                        </div>
+                      </div>
+                    </form>
+
+    </div>
+
         </div>
-      
-    
-    
-  
+                        
+        </div>
+     
       
     </div>
-  
-
 
   </div>
 

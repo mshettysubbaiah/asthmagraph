@@ -5,10 +5,10 @@ var OTable = $('#example').dataTable({
 	
 	// "scrollCollapse" : true,
 
-	//"bServerSide":true,
+	"bServerSide":true,
 	"bProcessing": true,
 	"bSearchable": true,
-	//"scrollY" : "200px",
+	"scrollY" : "400px",
 	"sDom": '<"top"f>rtiS',
 	"scrollCollapse": true,
 	"paging": false,
@@ -17,12 +17,12 @@ var OTable = $('#example').dataTable({
 		"tableWidthFixed" : false,
 	},
           	
-  	"sAjaxSource": "app/data/_search_databootstrap.json",
+  	// "sAjaxSource": "app/data/_search_databootstrap.json",
 
-  	//"sAjaxSource": "/api/getstandardterms",
+  	"sAjaxSource": "/api/getstandardterms",
 
   	///"ajax" : "app/data/_search_databootstrap.json",
-/*	"fnServerParams": function( aoData ){
+	"fnServerParams": function( aoData ){
 
 		var isAllChecked = document.getElementById('All').checked;
 
@@ -48,7 +48,7 @@ var OTable = $('#example').dataTable({
 		aoData.push({"name":"loinc", "value": isLOINCChecked});
 		aoData.push({"name":"rxnorm", "value": isRXNORMChecked});
 		aoData.push({"name":"mesh", "value": isMESHChecked});
-	},*/ 
+	},
 
 	"fnCreatedRow" : function(nRow, aData, iDataIndex) {
 
@@ -226,36 +226,35 @@ $.contextMenu({  //context menu for term
 	
 });  /* End of line 152 */ 
 
-	initializeTypeAhead();
-	console.log($('#new_saving_token').text());
-	$('#newbtn-slidepanel').bind('click', function() {
-					console.log("slidebutton");
-					$("#slider").show();
-					actualcounter = actualcounter + 1;
-					newverifycounter = actualcounter % 2;
-					$('#extruderLeft div.flap').css('background','url("app/images/doubleleftarrowimage.png") no-repeat');
-					if (newverifycounter == 1 || actualcounter == 1) {
-							$('#leftacrosspanel').show();
-							$("#slider").slideReveal("show");
-							$("#extruderLeft div.flap").css('left', '200%');
-							$('#newbtn-slidepanel').css('background','url("app/images/images-minus.png") no-repeat');
-							$('#newbtn-slidepanel').css('background-size','100%');
-							$("#adding-more").css('z-index', '2147483647');
-							$("#adding-more").css('left', '998');
-	
+initializeTypeAhead();
+
+console.log($('#new_saving_token').text());
+
+$('#newbtn-slidepanel').bind('click', function() {
+	console.log("slidebutton");
+	$("#slider").show();
+	actualcounter = actualcounter + 1;
+	newverifycounter = actualcounter % 2;
+	$('#extruderLeft div.flap').css('background','url("app/images/doubleleftarrowimage.png") no-repeat');
+	if (newverifycounter == 1 || actualcounter == 1) {
+		$('#leftacrosspanel').show();
+		$("#slider").slideReveal("show");
+		$("#extruderLeft div.flap").css('left', '200%');
+		$('#newbtn-slidepanel').css('background','url("app/images/images-minus.png") no-repeat');
+		$('#newbtn-slidepanel').css('background-size','100%');
+		$("#adding-more").css('z-index', '2147483647');
+		$("#adding-more").css('left', '998');	
 	}
 
-		if (newverifycounter == 0 || actualcounter == 2) {
-		
-			    $('#newbtn-slidepanel').css('background','url("app/images/plus-1.png") no-repeat');	           
-			  	$('#extruderLeft div.flap').css('background','url("app/images/leftarrowimages.jpg") no-repeat');
-				$('#extruderLeft div.flap').css('background-size','60%');
-				$('#newbtn-slidepanel').css('background-size','100%');
-				$("#slider").slideReveal("hide");
-				$("#extruderLeft div.flap").css('left', '100%');
-				$("#adding-more").css('z-index', '2147483647');
-				$("#adding-more").css('left', '498');
-
+	if (newverifycounter == 0 || actualcounter == 2) {
+	    $('#newbtn-slidepanel').css('background','url("app/images/plus-1.png") no-repeat');	           
+	  	$('#extruderLeft div.flap').css('background','url("app/images/leftarrowimages.jpg") no-repeat');
+		$('#extruderLeft div.flap').css('background-size','60%');
+		$('#newbtn-slidepanel').css('background-size','100%');
+		$("#slider").slideReveal("hide");
+		$("#extruderLeft div.flap").css('left', '100%');
+		$("#adding-more").css('z-index', '2147483647');
+		$("#adding-more").css('left', '498');
 	}
 });
 
@@ -817,6 +816,25 @@ $("#term_input_validate").fadeOut("slow");
     	});
   });
 var terms_length;
+
+/*pseudocode
+
+var sortOrder;
+
+if (Latest is selected) {
+	sortOrder = 1;
+} else if (Alphabet is select) {
+	sortOrder = 2;
+}
+var url = "/api/terms?sortorder=" + sortOrder;
+
+pass the url in the below ajax at line 841
+
+*/
+
+
+var sortOrder = 1;
+
 var getdata;
      $.ajax({
      	type:"get",

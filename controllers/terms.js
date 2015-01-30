@@ -29,6 +29,8 @@ exports.getTerms = function(req, res){
 			sortBy = { date : -1};   // Sort by latest entered data
 		} else if (sortOrder == 2) {
 			sortBy = { term : 1};	// Sort by alphabatical
+		} else {
+			sortBy = { date : -1}; 
 		}
 
 		if (isTokenValid == true) {

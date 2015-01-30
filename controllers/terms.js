@@ -26,9 +26,9 @@ exports.getTerms = function(req, res){
 		var sortBy;
 
 		if (sortOrder == 1) {
-			sortBy = { date : -1};   // Sort by latest entered data
+			sortBy = { date : 1};   // Sort by latest entered data
 		} else if (sortOrder == 2) {
-			sortBy = { term : 1};	// Sort by alphabatical
+			sortBy = { term : -1};	// Sort by alphabatical
 		} else {
 			sortBy = { date : -1}; 
 		}

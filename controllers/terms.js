@@ -26,7 +26,7 @@ exports.getTerms = function(req, res){
 		var sortBy;
 
 		if (sortOrder == 1) {
-			sortBy = { date : 1};   // Sort by latest entered data
+			sortBy = { date : -1};   // Sort by latest entered data
 		} else if (sortOrder == 2) {
 			sortBy = { term : -1};	// Sort by alphabatical
 		} else {
@@ -37,7 +37,7 @@ exports.getTerms = function(req, res){
 
 			Terms.find({active: true}, {"term": 1, _id:0})
 				.sort(sortBy)
-				.where("term").ne(null)
+				.where("term").ne("")
 				.exec( function(err, terms) {
 					// console.log('found data');
 					// console.log(terms);
@@ -51,7 +51,7 @@ exports.getTerms = function(req, res){
 						// console.log(terms[i].term);
 						termsResults.push(terms[i].term);
 					}
-					// console.log(termsResults);
+					console.log(termsResults);
 
 					res.json({data: termsResults});
 				});
@@ -154,7 +154,8 @@ exports.putTerm = function(req, res){
 							if (err)
 								res.send(err);
 
-							res.json({errcode: 0, message: 'Old term updated successfully, New term added successfully'});
+							// res.json({errcode: 0, message: 'Old term updated successfully, New term added successfully'});
+							res.json({message: 'Old term updated successfully, New term added successfully', data: term, status : "true"});
 						});
 					}
 				});

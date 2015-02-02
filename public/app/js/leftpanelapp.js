@@ -58,62 +58,61 @@ var OTable = $('#example').dataTable({
 
 	},
 	"columns" : [{
-		"aTargets" : [0],
-		"mData" : "id",
-		"sClass": "newid",
-		"mRender" : function(data, type, val) {
+			"aTargets" : [0],
+			"mData" : "id",
+			"sClass": "newid",
+			"mRender" : function(data, type, val) {
 
-			
-			var z = val.id;
-			
-
-			if (!val.id) {
-				val.id = "0";
-			}
-			if (z.length > 6) {
-				orgid = val.id;
-				z = z.substr(0, 6) + "...";
-
-				return z;
-			}
-			if (z.length <= 6) {
-			
-				return z;
-			}
-
-		}	
-	}, 
-	{
-		"aTargets" : [1],
-		"mData" : "term",
-		"sClass": "newterm",
-		"mRender" : function(data, type, val) {
-			
-			var y = val.term;
-			// console.log(y);
-
-			if (!val.term) {
-					val.term = " ";
-				}
-			if ( y.length < 30 ) {
-				orgterm = val.term;
-				//y = y.substr(0, 30) + "...";
-				return y;
-			}
-			if (y.length >= 30) {
+				
+				var z = val.id;
 				
 
-				y = y.substr(0, 30) + "...";
-				return y;
-			}
+				if (!val.id) {
+					val.id = "0";
+				}
+				if (z.length > 6) {
+					orgid = val.id;
+					z = z.substr(0, 6) + "...";
 
-		}
-	}, 
-	{
-			"data" : "db",
-			"width" : "20%",
-			"sClass": "newdb",
-	}]
+					return z;
+				}
+				if (z.length <= 6) {
+				
+					return z;
+				}
+
+			}	
+		}, 
+		{
+			"aTargets" : [1],
+			"mData" : "term",
+			"sClass": "newterm",
+			"mRender" : function(data, type, val) {
+				var y = val.term;
+				// console.log(y);
+
+				if (!val.term) {
+						val.term = " ";
+					}
+				if ( y.length < 30 ) {
+					orgterm = val.term;
+					//y = y.substr(0, 30) + "...";
+					return y;
+				}
+				if (y.length >= 30) {
+					
+
+					y = y.substr(0, 30) + "...";
+					return y;
+				}
+
+			}
+		}, 
+		{
+				"data" : "db",
+				"width" : "20%",
+				"sClass": "newdb",
+		}]
 });
 
 
@@ -417,7 +416,10 @@ function generateJSONTermsforedit(){
 
 		        jsonString = JSON.stringify(myObj);
 
-		       		 $("#final_saving_term_edit").text(jsonString); 
+		      //  alert(jsonString);
+
+		       	$("#final_saving_term_edit").text(jsonString); 
+
 		        }
 
 
@@ -477,7 +479,7 @@ $('#termsUpdateBtn_edit').click(function(){
 		          // Get the final string to save
 		           var jsonString = $("#final_saving_term_edit").text();
 		           console.log(jsonString);
-		           alert(jsonString);
+		          // alert(jsonString);
 		           var newinsertterm_edit = jsonString.term;
 
 		           // alert(jsonString);
@@ -485,7 +487,7 @@ $('#termsUpdateBtn_edit').click(function(){
 		           console.log(termInput);
 
 		      	$.ajax({
-		              type: 'POST',
+		              type: 'PUT',
 		              url: '/api/terms',
 		              data:jsonString,
 		              contentType: "application/json; charset=utf-8",
@@ -502,6 +504,7 @@ $('#termsUpdateBtn_edit').click(function(){
 
 		                  if (data[index] == "true") {
 		                      // alert(data[index]);
+		                      console.log('it is in index');
 		                      $("#termentersuccessalert_edit").fadeIn("slow");
                               $("#termentersuccessalert_edit").html("Well done!  " + termInput + "  is updated successfully");
 		                      // Call refresh button to reset fields after successful insert
@@ -528,14 +531,22 @@ $('#termsUpdateBtn_edit').click(function(){
 		          console.log('it is in delete');
 		       //   var newtoken = $.cookie('Token');
 		          // Get the final string to save
+
+		          generateJSONTermsforedit();
 		          var jsonString = $("#final_saving_term_edit").text();
+
+		         /* if ( jsonString == ""){
+                     var newstring =  $('#datatermstoedit').serialize();
+                          alert(newstring);
+                          generateJSONTermsforedit();
+		          }*/
 		          var newterm_edit = $('#term_input_edit').val();
-		           alert(jsonString);
+		          // alert(jsonString);
 			        console.log(newterm_edit);
 			            // send ajax post to delete the term
 			            
 			            $.ajax({
-			              type: 'POST',
+			              type: 'DELETE',
 			              url: '/api/terms', //datatermstodelete',
 			              data:jsonString,
 			              contentType: "application/json; charset=utf-8",
@@ -563,6 +574,7 @@ $('#termsUpdateBtn_edit').click(function(){
 
 		            // After successful delete reinitialize the typeahead so the deleted term 
 		            // is not in the searchable list
+		            $('#datatermstoedit')[0].reset()
 		            initializeTypeAhead();
 
 		          
@@ -833,6 +845,7 @@ pass the url in the below ajax at line 841
 */
 var sortOrder = 1;
 var getdata;
+      
      $.ajax({
      	type:"get",
      	url:"/api/terms",
@@ -843,11 +856,13 @@ var getdata;
      		console.log(data.data[0]);
      		var termIndex = 0;
      		if (data.data[termIndex]) {
-     			$("#termheading").html(data.data[termIndex]);
-     			termIndex = termIndex + 1;
+
+     			  $("#termheading").css('class','hidden');
+     			//$("#termheading").html(data.data[termIndex]);
+     			//termIndex = termIndex + 1;
      		}
      		terms_length = data.data.length;
-     		for(i=1;i<data.data.length; i++){
+     		for(i=0;i<data.data.length; i++){
      			$("#termentrydata").after('<span id = "termheading'+ i + '"style = "text-align:left;font-size:80%;" class = "listtermshead1" ></span><div id = "termentrydata'+ i +'"><span id  = \"listnewtermhead'+ i  + '\">Term:</span><span id  = "listnewtermdata'+ i + '"></span><br><span id  = "listnewsynonmshead"><b>Synonyms:</b></span><span id  = "listnewsynonyms_data'+ i + '"></span><br><span id  = "listnewsynonms_codes"><b>Codes:</b></span><br><span id  = "listnewsynonyms_loinc_head"><b>loinc</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_loinc'+ i + '"></span><br><span id  = "listnewsynonyms_icd10_head"><b>icd10</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_icd10' + i + '"></span><br><span id  = "listnewsynonyms_snomed_head"><b>snomed</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_snomed' + i + '"></span><br><span id  = "listnewsynonyms_rxnorm_head"><b>rxnorm</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_rxnorm' + i + '"></span><br><span id  = "listnewsynonyms_mesh_head"><b>mesh</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_mesh'+ i + '"></span><br></div>');
      			$("#termheading" + i).html(data.data[i]);
      			//$("#termenterydata" + targetid).html( ');
@@ -859,61 +874,63 @@ var getdata;
         }
     });
 
+
 console.log(getdata);
 $( '.listtermshead').on('click',function(e){  
-	console.log($(this).text());
-	console.log($(this)); 
-	var newlistterm =  $(this).text();       
-	$.ajax({
-		type: 'GET',
-		url: '/api/gettermdetails?term=' + newlistterm,
-		// data: mytermJSONObj,
-		contentType: "application/text; charset=utf-8",
-		dataType: 'json',
-		async: true,
-		success: function(data){
-	      
-			// Set the data in the saving terms also
-			$("#final_saving_term").text(JSON.stringify(data));
-			console.log(data);
-			$.each(data, function(index, value) {
-			
-				console.log(data);
-				console.log(data.data[0]);
-				console.log(terms_length);
-				//$("#termheading").html(data.data[0]);
-				$("#listnewterm_data").html(data.data[0].term);
-				$("#listnewsynonyms_data").html(data.data[0].synonyms);
-				$("#listnewsynonyms_loinc").html(data.data[0].concepts[0].loinc);
-				$('#listnewsynonyms_icd10').html(data.data[0].concepts[1].icd10);
-				$('#listnewsynonyms_snomed').html(data.data[0].concepts[2].snomed);
-				$('#listnewsynonyms_rxnorm').html(data.data[0].concepts[3].rxnorm);
-				$('#listnewsynonyms_mesh').html(data.data[0].concepts[4].mesh);
-				for(i=1;i<terms_length; i++) {
-	     	
-					/*	$("#termenterydata").html( '<span id  = "listnewterm_head'+ i + '">Term:</span><span id  = "listnewterm_data'+ i + '"></span><br>
-					<span id  = "listnewsynonms_head">Synonyms:</span><span id  = "listnewsynonyms_data"></span><br>
-					<span id  = "listnewsynonms_codes"><b>Codes:</b></span><br>
-					<span id  = "listnewsynonyms_loinc_head">loinc&nbsp;&nbsp;</span>
-					<span id  = "listnewsynonyms_loinc'+ i + '"></span><br>
-					<span id  = "listnewsynonyms_icd10_head">icd10&nbsp;&nbsp;</span>
-					<span id  = "listnewsynonyms_icd10' + i + '"></span><br>
-					<span id  = "listnewsynonyms_snomed_head">snomed&nbsp;&nbsp;</span>
-					<span id  = "listnewsynonyms_snomed' + i + '"></span><br>
-					<span id  = "listnewsynonyms_rxnorm_head">rxnorm&nbsp;&nbsp;</span>
-					<span id  = "listnewsynonyms_rxnorm' + i + '"></span><br> 
-					<span id  = "listnewsynonyms_mesh_head">mesh&nbsp;&nbsp;</span> 
-					<span id  = "listnewsynonyms_mesh'+i + '"></span><br>');*/
-				}
-	
-	
-				$("#listaccordion").accordion('refresh');
-	 
-			});
-	
-		}
-	});
-});
+console.log($(this).text());
+console.log($(this)); 
+var newlistterm =  $(this).text();       
+          $.ajax({
+              type: 'GET',
+              url: '/api/gettermdetails?term=' + newlistterm,
+              // data: mytermJSONObj,
+              contentType: "application/text; charset=utf-8",
+              dataType: 'json',
+              async: true,
+              success: function(data){
+              	
+                // Set the data in the saving terms also
+                $("#final_saving_term").text(JSON.stringify(data));
+                  console.log(data);
+                $.each(data, function(index, value) {
+                
+               console.log(data);
+     		console.log(data.data[0]);
+     		console.log(terms_length);
+     		//$("#termheading").html(data.data[0]);
+     		$("#listnewterm_data").html(data.data[0].term);
+     		$("#listnewsynonyms_data").html(data.data[0].synonyms);
+     		$("#listnewsynonyms_loinc").html(data.data[0].concepts[0].loinc);
+     		$('#listnewsynonyms_icd10').html(data.data[0].concepts[1].icd10);
+     		$('#listnewsynonyms_snomed').html(data.data[0].concepts[2].snomed);
+     		$('#listnewsynonyms_rxnorm').html(data.data[0].concepts[3].rxnorm);
+     		$('#listnewsynonyms_mesh').html(data.data[0].concepts[4].mesh);
+     		for(i=1;i<terms_length; i++){
+     			
+     		/*	$("#termenterydata").html( '<span id  = "listnewterm_head'+ i + '">Term:</span><span id  = "listnewterm_data'+ i + '"></span><br>
+                        <span id  = "listnewsynonms_head">Synonyms:</span><span id  = "listnewsynonyms_data"></span><br>
+                        <span id  = "listnewsynonms_codes"><b>Codes:</b></span><br>
+                        <span id  = "listnewsynonyms_loinc_head">loinc&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_loinc'+ i + '"></span><br>
+                        <span id  = "listnewsynonyms_icd10_head">icd10&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_icd10' + i + '"></span><br>
+                        <span id  = "listnewsynonyms_snomed_head">snomed&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_snomed' + i + '"></span><br>
+                        <span id  = "listnewsynonyms_rxnorm_head">rxnorm&nbsp;&nbsp;</span>
+                        <span id  = "listnewsynonyms_rxnorm' + i + '"></span><br> 
+                        <span id  = "listnewsynonyms_mesh_head">mesh&nbsp;&nbsp;</span> 
+                        <span id  = "listnewsynonyms_mesh'+i + '"></span><br>');*/
+     		}
+            
+
+            $("#listaccordion").accordion('refresh');
+                
+                 
+              });
+
+                }
+            });
+            });
 
 $('body').on('click','span.listtermshead1',function(e){         
 
@@ -996,7 +1013,7 @@ console.log(newlistterm);
 
 			     		terms_length = data.data.length;
 			     		console.log(data.data);
-			     		for(i=1;i<data.data.length; i++){
+			     		for(i=0;i<data.data.length; i++){
 			     			
 			     			$("#termheading" + i).html(data.data[i]);
 			     			
@@ -1010,3 +1027,35 @@ console.log(newlistterm);
 
 
 			}
+$('.listterms ').on('click',function(e){ 
+   console.log('it is in tag function');
+     $.ajax({
+     	type:"get",
+     	url:"/api/terms",
+     	success: function(data){
+     		console.log(data);
+     		getdata = data.data;
+     		console.log(getdata);
+     		console.log(data.data[0]);
+     		var termIndex = 0;
+     		console.log(data.data.reverse());
+     		if (data.data[termIndex]) {
+
+     			  $("#termheading").css('class','hidden');
+     			//$("#termheading").html(data.data[termIndex]);
+     			//termIndex = termIndex + 1;
+     		}
+     		terms_length = data.data.length;
+     		for(i=0;i<data.data.length; i++){
+     			//$("#termentrydata").after('<span id = "termheading'+ i + '"style = "text-align:left;font-size:80%;" class = "listtermshead1" ></span><div id = "termentrydata'+ i +'"><span id  = \"listnewtermhead'+ i  + '\">Term:</span><span id  = "listnewtermdata'+ i + '"></span><br><span id  = "listnewsynonmshead"><b>Synonyms:</b></span><span id  = "listnewsynonyms_data'+ i + '"></span><br><span id  = "listnewsynonms_codes"><b>Codes:</b></span><br><span id  = "listnewsynonyms_loinc_head"><b>loinc</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_loinc'+ i + '"></span><br><span id  = "listnewsynonyms_icd10_head"><b>icd10</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_icd10' + i + '"></span><br><span id  = "listnewsynonyms_snomed_head"><b>snomed</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_snomed' + i + '"></span><br><span id  = "listnewsynonyms_rxnorm_head"><b>rxnorm</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_rxnorm' + i + '"></span><br><span id  = "listnewsynonyms_mesh_head"><b>mesh</b>&nbsp;&nbsp;</span><span id  = "listnewsynonyms_mesh'+ i + '"></span><br></div>');
+     			$("#termheading" + i).html(data.data[i]);
+     			//$("#termenterydata" + targetid).html( ');
+     		}
+            
+
+            $("#listaccordion").accordion('refresh');
+          
+        }
+    });
+
+});

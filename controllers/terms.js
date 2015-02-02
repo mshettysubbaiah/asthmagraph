@@ -35,8 +35,9 @@ exports.getTerms = function(req, res){
 
 		if (isTokenValid == true) {
 
-			Terms.find({}, {"term": 1, _id:0})
+			Terms.find({active: true}, {"term": 1, _id:0})
 				.sort(sortBy)
+				.where("term").ne(null)
 				.exec( function(err, terms) {
 					// console.log('found data');
 					// console.log(terms);
@@ -170,6 +171,8 @@ exports.deleteTerm = function(req, res){
 
 	// console.log(req.params.term_id);
 	// console.log(req.user._id);
+	// 
+	console.log(req.body);
 
 	console.log(req.body.term);
 
@@ -189,7 +192,7 @@ exports.deleteTerm = function(req, res){
 		},
 		function(err, data) {
 
-			// console.log(data);
+			console.log(data);
 
 			if (err) {
 

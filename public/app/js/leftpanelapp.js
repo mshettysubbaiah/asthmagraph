@@ -5,10 +5,10 @@ var OTable = $('#example').dataTable({
 	
 	// "scrollCollapse" : true,
 
-	//"bServerSide":true,
+	"bServerSide":true,
 	"bProcessing": true,
 	"bSearchable": true,
-	//"scrollY" : "200px",
+	"scrollY" : "350px",
 	"sDom": '<"top"f>rtiS',
 	"scrollCollapse": true,
 	"paging": false,
@@ -22,7 +22,7 @@ var OTable = $('#example').dataTable({
   	//"sAjaxSource": "/api/getstandardterms",
 
   	///"ajax" : "app/data/_search_databootstrap.json",
-/*	"fnServerParams": function( aoData ){
+	"fnServerParams": function( aoData ){
 
 		var isAllChecked = document.getElementById('All').checked;
 
@@ -48,7 +48,7 @@ var OTable = $('#example').dataTable({
 		aoData.push({"name":"loinc", "value": isLOINCChecked});
 		aoData.push({"name":"rxnorm", "value": isRXNORMChecked});
 		aoData.push({"name":"mesh", "value": isMESHChecked});
-	},*/ 
+	},
 
 	"fnCreatedRow" : function(nRow, aData, iDataIndex) {
 

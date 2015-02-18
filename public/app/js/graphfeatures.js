@@ -96,6 +96,8 @@ function contextmenuedit() {
 		callback : function(key, options) {
 			var m = "clicked: " + key;
 			//	window.console && console.log(m) || alert(m);
+			clickednodeid = this[0].parentNode.textContent.substr(4,5);
+			console.log(this[0].parentNode.textContent.substr(4,5));
 			if (key == "edit") {
 				var newid = lastNodeId + 1;
 				// $( "#dialog-form" ).dialog( "option", "title",  'NODE' +"  " + newnodenew.id  );  //title for node dialog
@@ -208,6 +210,7 @@ function gettooltip() {
 $(".add-more").click(function(e) {
 	e.preventDefault();
 	e.stopPropagation();
+	//counter++;
 	//	if (addfield_count == 1){
 	//$('#newpopupbox').popup('hide');
 	//}
@@ -946,6 +949,7 @@ $(document).on("contextmenu", "#newtermform input ", function(e) {
 
 });
 
+
 /**    $('#newbtn-slidepanel').bind('click',function(){
  actualcounter = actualcounter + 1;
  newverifycounter = actualcounter % 2;
@@ -1021,3 +1025,95 @@ initializeTypeAhead();
      
        
        //  } /* ----- End of initializeTypeAhead ---- */ 
+
+		function JSONTermsfornodedata(){
+                 jsonparameter = [];
+                 jsonfield     = [];
+		         term_input = $('#termtext').val();
+		         synonyms = $('#synicfield1').val();
+		         category_input = $('.newlis').val();
+		        console.log(category_input);
+		        console.log(synonyms);
+		        console.log(next);
+		        console.log($('#radio-unclassified').is(':checked'));
+
+		       // console.log();
+		       /* for( i=0; i<next; i++){
+		        	 jsonparameter  = $('#parameter'+ i).val();
+		        	 jsonfield  = $('#field' + i).val();
+		        };*/
+		        var newcat;
+		        console.log(jsonparameter);
+		        console.log(jsonfield);
+		        var unclassifieddata = $('#radio-unclassified').val();
+		        var parameterdata = [];
+		        var fielddata = [];
+		        if(unclassifieddata){
+		        	newcat ='Unclassified';
+		        }
+		        if($('#radio-genetics').is(':checked')){
+		        	newcat ='Genetics';
+		        }
+		        if($('#radio-physiology').is(':checked')){
+		        	newcat ='Physiology';
+		        }
+		        if($('#radio-patient').is(':checked')){
+		        	newcat ='Patient';
+		        }
+		        if($('#radio-system').is(':checked')){
+		        	newcat ='System';
+		        }
+		        if($('#radio-environment').is(':checked')){
+		        	newcat ='Environment';
+		        }
+		        for(i=0;i<next ;i++){
+		        	parameterdata.push($('#parameter'+ i).val());
+                    fielddata.push($('#field'+ i).val());
+		        	
+		        }
+		        console.log(parameterdata);
+		        console.log(fielddata);
+	           $.each( parameterdata, function( index, value ) {
+	           	$.each( fielddata, function( index1, value1 ) {
+	           		var fieldaval = value1,
+	           		     paramval = value;
+
+		        var myObj = {
+		        'Term' : term_input,
+		        'Synonyms':synonyms,
+		        'Categories': newcat,
+                //'Parameter' : parameterdata,
+                paramval    : fieldaval
+                
+  				
+			
+		        /*for(i=0;i<next ;i++){
+		        	 $('#parameter'+ i).val() : $('#field' + i).val();
+		        	
+		        }*/
+		         
+		        
+		        };
+		        alert( value + ": " + value1 );
+		        jsonString1 = JSON.stringify(myObj);
+});
+	});           	
+		        
+
+		      //  alert(jsonString);
+		      console.log(jsonString1);
+
+		       //	$("#final_saving_term_edit").text(jsonString); 
+
+		        }
+
+function completedata(){
+
+var totalaccordiandata = $('#totaldata').text();
+console.log(totalaccordiandata);
+console.log($('#totaldata').serialize());
+//console.log($('#totaldata').submit());
+var jsontotaldata = JSON.stringify(totalaccordiandata);
+console.log(jsontotaldata);
+
+}

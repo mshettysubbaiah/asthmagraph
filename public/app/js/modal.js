@@ -13,6 +13,8 @@ $(document).ready(function() {
 	var newtitle;
 	var newcounter = 0;
 	var newcounters;
+	var clickednodeid;
+	var counter = 1;
 	var startarrow = ' ', endarrow = ' ';
 	var newnodeids;
 	    $('.flap').css('background','url(../images/leftarrowimages.jpg)!important')
@@ -525,6 +527,7 @@ function changenode() {
 				//$("<div id='olddetailstextmodal" + (newnodenew.id) + "'></div>").insertAfter('#formhead'+(newnodenew.id));
 				dialog.dialog("close");
 				$('#dialog-form').popup('hide');
+				JSONTermsfornodedata();
 				//updating the form data in the panel
 				$('#frm-data')[0].reset();
 				$("#newpanel").accordion("refresh");
@@ -535,6 +538,10 @@ function changenode() {
 	   });
 				$("#newpanel").accordion("option", "collapsible", true);
 				$("#newpanel").accordion("option", "active", false);
+				console.log($('.node'+ clickednodeid).find('text'));
+				$('.newid'+ clickednodeid).html(validnode);
+				//JSONTermsfornodedata();
+
 	}
 
 /*-----------------------------------end of Update section for node data and time-stamp with tool-tip-----------------------------*/

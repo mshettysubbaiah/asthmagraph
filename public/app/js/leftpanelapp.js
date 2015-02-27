@@ -5,10 +5,10 @@ var OTable = $('#example').dataTable({
 	
 	// "scrollCollapse" : true,
 
-	"bServerSide":true,
+	//"bServerSide":true,
 	"bProcessing": true,
 	"bSearchable": true,
-	"scrollY" : "350px",
+	//"scrollY" : "200px",
 	"sDom": '<"top"f>rtiS',
 	"scrollCollapse": true,
 	"paging": false,
@@ -22,7 +22,7 @@ var OTable = $('#example').dataTable({
   	//"sAjaxSource": "/api/getstandardterms",
 
   	///"ajax" : "app/data/_search_databootstrap.json",
-	"fnServerParams": function( aoData ){
+/*	"fnServerParams": function( aoData ){
 
 		var isAllChecked = document.getElementById('All').checked;
 
@@ -48,7 +48,7 @@ var OTable = $('#example').dataTable({
 		aoData.push({"name":"loinc", "value": isLOINCChecked});
 		aoData.push({"name":"rxnorm", "value": isRXNORMChecked});
 		aoData.push({"name":"mesh", "value": isMESHChecked});
-	},
+	},*/ 
 
 	"fnCreatedRow" : function(nRow, aData, iDataIndex) {
 
@@ -89,14 +89,14 @@ var OTable = $('#example').dataTable({
 			"sClass": "newterm",
 			"mRender" : function(data, type, val) {
 				var y = val.term;
-				
+				// console.log(y);
 
 				if (!val.term) {
 						val.term = " ";
 					}
 				if ( y.length < 30 ) {
 					orgterm = val.term;
-					
+					//y = y.substr(0, 30) + "...";
 					return y;
 				}
 				if (y.length >= 30) {
@@ -317,56 +317,59 @@ $('#example tbody').on('click', 'td', function() {
 
 
 
-					$('input').keydown(function(e){
-	 					e.stopPropagation();
-						});
+$('input').keydown(function(e){
+			 e.stopPropagation();
+
+});
 
 				 // Functionality when submit button pressed
-	$('#termsSubmitBtn').click(function(){
-			       var newtoken = $.cookie('Token');
-			              console.log("it is in submit");
-			          // Get the final string to save
-			       var jsonString = $("#final_saving_term").text();
-		                   console.log(jsonString);
-		               newtermsubmit = $('#term_input').val();
-		           
-		        	 console.log(newtermsubmit);
-		               var termInput = $('#term_input').val();
-		           
-          		$.ajax({
-		              type: 'POST',
-		              url: '/api/terms',
-		              data:jsonString,
-		              contentType: "application/json; charset=utf-8",
-		              dataType: 'json',
-		              async: true,
-		              
-		              success: function(data){
-		              	console.log(data.term);
-		                $.each(data, function(index, value) {
-		                  //alert(index);
-		
-		                  // This indicates the success status
-		                  // The record successfully saved
-		                  // Processing the json {"status": "true"}
-		                  // 
-		                  if (data[index] == "true") {
-		                      
-		                      console.log(data[index].term);
-		                      $("#termentersuccessalert").fadeIn("slow");
-		                      $("#termentersuccessalert").html("Well done!  "+ newtermsubmit  +"  inserted successfully ");
-		                      
-		
-		                  }
-		              });
-		            }
-		          });
-		          $("#newdatatermstosave")[0].reset();
-		          $('#termtypeahead').typeahead('destroy');
-		          initializeTypeAhead();
-      			});
+$('#termsSubmitBtn').click(function(){
 
-	function generateJSONTermsforedit(){
+        	
+	       var newtoken = $.cookie('Token');
+	              console.log("it is in submit");
+	          // Get the final string to save
+	       var jsonString = $("#final_saving_term").text();
+                   console.log(jsonString);
+               newtermsubmit = $('#term_input').val();
+           
+           console.log(newtermsubmit);
+           var termInput = $('#term_input').val();
+           
+          $.ajax({
+              type: 'POST',
+              url: '/api/terms',
+              data:jsonString,
+              contentType: "application/json; charset=utf-8",
+              dataType: 'json',
+              async: true,
+              
+              success: function(data){
+              	console.log(data.term);
+                $.each(data, function(index, value) {
+                  //alert(index);
+
+                  // This indicates the success status
+                  // The record successfully saved
+                  // Processing the json {"status": "true"}
+                  // 
+                  if (data[index] == "true") {
+                      
+                      console.log(data[index].term);
+                      $("#termentersuccessalert").fadeIn("slow");
+                      $("#termentersuccessalert").html("Well done!  "+ newtermsubmit  +"  inserted successfully ");
+                      
+
+                  }
+              });
+            }
+          });
+          $("#newdatatermstosave")[0].reset();
+          $('#termtypeahead').typeahead('destroy');
+          initializeTypeAhead();
+      });
+
+function generateJSONTermsforedit(){
        
 		        var term_input = document.getElementById('term_input_edit').value;
 		        var loinc_input_edit = document.getElementById('loinc_input_edit').value;
@@ -375,6 +378,10 @@ $('#example tbody').on('click', 'td', function() {
 		        var rxnorm_input_edit = document.getElementById('rxnorm_input_edit').value;
 		        var mesh_input_edit = document.getElementById('mesh_input_edit').value;
 		        var synonyms_input = document.getElementById('synonyms_input_edit').value;
+
+		     
+		        
+
 		        var synonymsArray = [];
 		        var synonymsArrayWithCommaAndSpaceSeparated = [];
 		        // First split words which are ", " (comma and space separated)
@@ -408,16 +415,21 @@ $('#example tbody').on('click', 'td', function() {
 		        };
 
 		        jsonString = JSON.stringify(myObj);
+
 		      //  alert(jsonString);
+
 		       	$("#final_saving_term_edit").text(jsonString); 
 
 		        }
 
 
-		function OnTermInputedit(event) {
+function OnTermInputedit(event) {
 	
 		        var term_input_data = document.getElementById('term_input_edit').value;
 		        var termlength = term_input_data.length;
+		    
+
+
 
 		      if (termlength > 0  ) {
 		          // alert('insider');
@@ -434,7 +446,7 @@ $('#example tbody').on('click', 'td', function() {
 		        searchstring = "";
 		      }
 
-	function OnTypeaheadInputedit(event) {
+function OnTypeaheadInputedit(event) {
 		   
 		        var termdatatypeahead = document.getElementById('termtypeahead').value;
 		        var termtypelength = termdatatypeahead.length;
@@ -457,8 +469,8 @@ $('#example tbody').on('click', 'td', function() {
 		      }
 
 
-	// Functionality when update button pressed
-		$('#termsUpdateBtn_edit').click(function(){
+// Functionality when update button pressed
+$('#termsUpdateBtn_edit').click(function(){
 
 		        	
 			       var newtoken = $.cookie('Token');
@@ -516,9 +528,13 @@ $('#example tbody').on('click', 'td', function() {
     $('#deletetermsbtn').click(function(){
 		        	
 		          console.log('it is in delete');
+		       
 		          // Get the final string to save
+
 		          generateJSONTermsforedit();
 		          var jsonString = $("#final_saving_term_edit").text();
+
+		        
 		          var newterm_edit = $('#term_input_edit').val();
 		          // alert(jsonString);
 			        console.log(newterm_edit);
@@ -533,6 +549,8 @@ $('#example tbody').on('click', 'td', function() {
 			              async: true,
 			              success: function(data){
 			                $.each(data, function(index, value) {
+			                  
+
 			                  // This indicates the success status
 			                  // The record successfully saved
 			                  // Processing the json {"status": "true"}
@@ -553,10 +571,13 @@ $('#example tbody').on('click', 'td', function() {
 		            // is not in the searchable list
 		            $('#datatermstoedit')[0].reset()
 		            initializeTypeAhead();
+
+		          
+
 		        });
 
 					//Clear all functionality
-	$('#cleartermsbtn').click(function(){
+			$('#cleartermsbtn').click(function(){
 		          console.log('it is in delete');
 		          // Get the final string to save
 		          var jsonString = $("#final_saving_term").text();
@@ -746,7 +767,7 @@ $('#example tbody').on('click', 'td', function() {
     function gettermdetails(term){
 
           // Get the final string to save
-      	  var inputterm = term;
+      var inputterm = term;
       
           console.log(inputterm);
           
@@ -792,20 +813,20 @@ $('#example tbody').on('click', 'td', function() {
 
                 }
             });
-		$("#term_input_validate").fadeOut("slow");
-		                
-		      }
-		
+$("#term_input_validate").fadeOut("slow");
+                
+      }
+
 /*****************************************************************************/
-		   $(function() {
-		    $( "#listaccordion" ).accordion({ 
-		         heightStyle: "content",
-		         collapsible: true,
-		         active: false 
-		
-		    	});
-		  });
-		var terms_length;
+   $(function() {
+    $( "#listaccordion" ).accordion({ 
+         heightStyle: "content",
+         collapsible: true,
+         active: false 
+
+    	});
+  });
+var terms_length;
 
 /*pseudocode
 var sortOrder;
@@ -817,19 +838,19 @@ sortOrder = 2;
 var url = "/api/terms?sortorder=" + sortOrder;
 pass the url in the below ajax at line 841
 */
-			var sortOrder = 1;
-			var getdata;
-		      
-		     $.ajax({
-		     	type:"get",
-		     	url:"/api/terms",
-		     	success: function(data){
-		     		console.log(data);
-		     		getdata = data.data;
-		     		console.log(getdata);
-		     		console.log(data.data[0]);
-		     		var termIndex = 0;
-		     		if (data.data[termIndex]) {
+var sortOrder = 1;
+var getdata;
+      
+     $.ajax({
+     	type:"get",
+     	url:"/api/terms",
+     	success: function(data){
+     		console.log(data);
+     		getdata = data.data;
+     		console.log(getdata);
+     		console.log(data.data[0]);
+     		var termIndex = 0;
+     		if (data.data[termIndex]) {
 
      			  $("#termheading").css('class','hidden');
      		
@@ -851,20 +872,20 @@ pass the url in the below ajax at line 841
     });
 
 
-	console.log(getdata);
-	
-	var flag = 1;
-	
-	$('body').on('click','span.listtermshead1',function(e){         
-	var htmlid = 0;
-	var dataid = 0;
-	
-	console.log($(this)); 
-	console.log(e.target.id);
-	var targetid = e.target.id.substr(11,12);
-	console.log(targetid);
-	var newlistterm =  $(this).text(); 
-	console.log(newlistterm);       
+console.log(getdata);
+
+var flag = 1;
+
+$('body').on('click','span.listtermshead1',function(e){         
+var htmlid = 0;
+var dataid = 0;
+
+console.log($(this)); 
+console.log(e.target.id);
+var targetid = e.target.id.substr(11,12);
+console.log(targetid);
+var newlistterm =  $(this).text(); 
+console.log(newlistterm);       
           $.ajax({
               type: 'GET',
               url: '/api/gettermdetails?term=' + newlistterm,
@@ -954,34 +975,34 @@ pass the url in the below ajax at line 841
 
 
 			}
-	$('.listterms ').on('click',function(e){ 
-	   console.log('it is in tag function');
-	     $.ajax({
-	     	type:"get",
-	     	url:"/api/terms",
-	     	success: function(data){
-	     		console.log(data);
-	     		getdata = data.data;
-	     		console.log(getdata);
-	     		console.log(data.data[0]);
-	     		var termIndex = 0;
-	     		console.log(data.data.reverse());
-	     		if (data.data[termIndex]) {
-	
-	     			  $("#termheading").css('class','hidden');
-	     			
-	     		}
-	     		terms_length = data.data.length;
-	     		for(i=0;i<data.data.length; i++){
-	     			
-	     			$("#termheading" + i).html(data.data[i]);
-	     			
-	     		}
-	            
-	
-	            $("#listaccordion").accordion('refresh');
-	          
-	        }
-	    });
-	
-	});
+$('.listterms ').on('click',function(e){ 
+   console.log('it is in tag function');
+     $.ajax({
+     	type:"get",
+     	url:"/api/terms",
+     	success: function(data){
+     		console.log(data);
+     		getdata = data.data;
+     		console.log(getdata);
+     		console.log(data.data[0]);
+     		var termIndex = 0;
+     		console.log(data.data.reverse());
+     		if (data.data[termIndex]) {
+
+     			  $("#termheading").css('class','hidden');
+     			
+     		}
+     		terms_length = data.data.length;
+     		for(i=0;i<data.data.length; i++){
+     			
+     			$("#termheading" + i).html(data.data[i]);
+     			
+     		}
+            
+
+            $("#listaccordion").accordion('refresh');
+          
+        }
+    });
+
+});

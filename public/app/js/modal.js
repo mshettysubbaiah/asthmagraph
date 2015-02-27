@@ -20,6 +20,7 @@ $(document).ready(function() {
 	    $('.flap').css('background','url(../images/leftarrowimages.jpg)!important')
 		$("span[aria-live='assertive']").hide();
 		// hide the sliding panel
+		
 		$("#slider").hide();
 		$("#slider").slideReveal("hide");
 	var width = $(window).width(), height = $(window).height();
